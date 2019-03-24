@@ -9,7 +9,7 @@ import { AuthService } from '../../providers/auth-service/auth-service';
 })
 export class LoginPage {
   loading: Loading;
-  registerCredentials = { email: '', password: '' };
+  registerCredentials = { email: null, password: null };
 
   constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) { }
 
@@ -18,17 +18,23 @@ export class LoginPage {
   }
 
   public login() {
-    this.showLoading()
-    this.auth.login(this.registerCredentials).subscribe(allowed => {
-        if (allowed) {
-          this.nav.setRoot('HomePage');
-        } else {
-          this.showError("Access Denied");
-        }
-      },
-      error => {
-        this.showError(error);
-      });
+		this.showLoading();
+		this.auth.login(this.registerCredentials).then(_res => {
+			this.nav.setRoot('HomePage');
+		}).catch(_err => {
+			this.loading.dismiss();
+			if (_err.error.wrongCredentials) {
+				this.alertCtrl.create({
+					message: 'Veuillez verifier vos données',
+					buttons: ['OK']
+				}).present();
+			} else {
+				this.alertCtrl.create({
+					message: 'Une erreur est survenue',
+					buttons: ['OK']
+				}).present();
+			}		
+		});
   }
 
   showLoading() {
@@ -47,6 +53,6 @@ export class LoginPage {
       subTitle: text,
       buttons: ['OK']
     });
-    alert.present(prompt);
+    alert.present();
   }
 }
