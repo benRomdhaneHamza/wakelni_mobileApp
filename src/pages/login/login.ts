@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service/auth-service';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -9,9 +10,17 @@ import { AuthService } from '../../providers/auth-service/auth-service';
 })
 export class LoginPage {
   loading: Loading;
-  registerCredentials = { email: null, password: null };
+  loginCredentials = { email: null, password: null };
 
-  constructor(private nav: NavController, private auth: AuthService, private alertCtrl: AlertController, private loadingCtrl: LoadingController) { }
+	constructor(private nav: NavController,
+		private auth: AuthService,
+		private alertCtrl: AlertController,
+		private loadingCtrl: LoadingController,
+		private storage: Storage) {
+			this.storage.get('user').then((_currentUser) => {
+				if (_currentUser) return this.nav.setRoot('HomePage');
+			});
+		}
 
   public createAccount() {
     this.nav.push('RegisterPage');
@@ -19,7 +28,7 @@ export class LoginPage {
 
   public login() {
 		this.showLoading();
-		this.auth.login(this.registerCredentials).then(_res => {
+		this.auth.login(this.loginCredentials).then(_res => {
 			this.nav.setRoot('HomePage');
 		}).catch(_err => {
 			this.loading.dismiss();
