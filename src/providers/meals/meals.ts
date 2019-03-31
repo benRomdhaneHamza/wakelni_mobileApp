@@ -5,7 +5,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class MealsProvider {
 
-	apiUrl = 'http://localhost:8080/api/meals';
+	apiUrl = 'https://wakelni-api.herokuapp.com/api/meals';
 	currentUser = null;
 
 	constructor(public http: HttpClient,
