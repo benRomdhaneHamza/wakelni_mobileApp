@@ -9,6 +9,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { MealsProvider } from '../providers/meals/meals';
+import { CommandProvider } from '../providers/command/command';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { MealsProvider } from '../providers/meals/meals';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     AuthService,
-    MealsProvider
+    MealsProvider,
+    CommandProvider
   ]
 })
 export class AppModule {}

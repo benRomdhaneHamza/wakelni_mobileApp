@@ -10,7 +10,7 @@ import { Storage } from '@ionic/storage';
 export class TabsPage {
 
 	tab1Root = 'HomePage';
-	tab2Root = 'HomePage';
+	tab2Root = 'CommandListPage';
 	tab3Root = 'AccountPage';
 
 	constructor(public navCtrl: NavController, public navParams: NavParams,

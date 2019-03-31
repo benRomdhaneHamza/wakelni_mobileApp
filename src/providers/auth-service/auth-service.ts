@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Storage } from '@ionic/storage';
 
+import { environment as ENV } from '../../environments/environment';
+
 @Injectable()
 export class AuthService {
-	apiUrl = 'https://wakelni-api.herokuapp.com/api/users';
+	apiUrl = ENV.BASE_URL+'/users';
 	constructor(public http: HttpClient,
 		private storage: Storage) {}
 

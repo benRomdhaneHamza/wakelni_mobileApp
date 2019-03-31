@@ -18,9 +18,9 @@ export class AccountPage {
 	}
 	
 	logout() {
-		this.storage.remove('user').then((_logout) => {
-			window.location.reload();
-		});
+		this.storage.remove('user');
+		this.navCtrl.setRoot('LoginPage');
+		window.location.reload();
 	}
 
 }

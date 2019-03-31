@@ -1,7 +1,11 @@
 <ion-content class="home" padding>
 	<search-meal></search-meal>
-	<h1>Les repas les plus proches :</h1>
+	<h3>Les repas les plus proches :</h3>
 	<div *ngFor="let meal of meals">
 		<meal-item [meal]="meal"></meal-item>
+	</div>
+	<div *ngIf="!meals" class="globalCentered">
+		<ion-spinner name="bubbles"></ion-spinner>
+		Chargement
 	</div>
 </ion-content>

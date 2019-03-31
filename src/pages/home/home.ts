@@ -22,7 +22,7 @@ export class HomePage {
 	}
 
 	getMeals() {
-		console.log('----------');
+		console.log('-------')
 		this.mealsProvider.getMeals().then(_meals => {
 			this.meals = _meals;
 		}).catch(_err => console.error(_err));

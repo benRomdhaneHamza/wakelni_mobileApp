@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { environment as ENV } from '../../environments/environment';
 
 @Injectable()
 export class MealsProvider {
 
-	apiUrl = 'https://wakelni-api.herokuapp.com/api/meals';
+	apiUrl = ENV.BASE_URL+'/meals';
 	currentUser = null;
 
 	constructor(public http: HttpClient,

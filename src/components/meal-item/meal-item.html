@@ -1,13 +1,48 @@
 <ion-card>
-	<div class="hasBackground"
-	[style.backgroundImage]="meal.image ? 'url('+meal.image.secure_url+')' : 'url(../../assets/imgs/logo.png)'"></div>
+	<div class="hasBackground" [style.backgroundImage]="meal.image ? 'url('+meal.image.secure_url+')' : 'url(../../assets/imgs/logo.png)'"></div>
 
-		<ion-card-content>
-			<ion-card-title>
-				{{ meal.name }}
-			</ion-card-title>
-			<p class="lineBreak">
-				{{ meal.description}}
-			</p>
-		</ion-card-content>
+	<ion-card-content>
+		<ion-card-title>
+			{{ meal.name }}
+		</ion-card-title>
+		<p class="lineBreak">
+			{{ meal.description}}
+		</p>
+		<div style="float: left; margin-top: 10px;">
+			<ion-chip>
+				<ion-label color="blue" style="font-size: 1.3em;color: blue">
+					{{ meal.price }} DT
+				</ion-label>
+			</ion-chip>
+		</div>
+		<div style="float: right;">
+			<ion-row>
+
+				<ion-col style="padding: 0" *ngIf="commands > 0">
+					<div>
+						<button color="light" ion-fab mini>
+							{{ commands }}
+						</button>
+					</div>
+				</ion-col>
+
+				<ion-col style="padding: 0" *ngIf="commands > 0">
+					<div>
+						<button color="danger" ion-fab mini (click)="removeFromCommands()">
+							<ion-icon name="remove"></ion-icon>
+						</button>
+					</div>
+				</ion-col>
+
+				<ion-col style="padding: 0">
+					<div>
+						<button color="secondary" ion-fab mini (click)="addToCommands()">
+							<ion-icon name="add"></ion-icon>
+						</button>
+					</div>
+				</ion-col>
+
+			</ion-row>
+		</div>
+	</ion-card-content>
 </ion-card>
