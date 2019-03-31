@@ -8,6 +8,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
+import { MealsProvider } from '../providers/meals/meals';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MyApp } from './app.component';
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    AuthService,
+    MealsProvider
   ]
 })
 export class AppModule {}

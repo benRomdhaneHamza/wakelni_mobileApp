@@ -5,31 +5,31 @@ import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
-  selector: 'page-login',
-  templateUrl: 'login.html',
+	selector: 'page-login',
+	templateUrl: 'login.html',
 })
 export class LoginPage {
-  loading: Loading;
-  loginCredentials = { email: null, password: null };
+	loading: Loading;
+	loginCredentials = { email: null, password: null };
 
 	constructor(private nav: NavController,
 		private auth: AuthService,
 		private alertCtrl: AlertController,
 		private loadingCtrl: LoadingController,
 		private storage: Storage) {
-			this.storage.get('user').then((_currentUser) => {
-				if (_currentUser) return this.nav.setRoot('HomePage');
-			});
-		}
+		this.storage.get('user').then((_currentUser) => {
+			if (_currentUser) return this.nav.setRoot('TabsPage');
+		});
+	}
 
-  public createAccount() {
-    this.nav.push('RegisterPage');
-  }
+	public createAccount() {
+		this.nav.push('RegisterPage');
+	}
 
-  public login() {
+	public login() {
 		this.showLoading();
 		this.auth.login(this.loginCredentials).then(_res => {
-			this.nav.setRoot('HomePage');
+			this.nav.setRoot('TabsPage');
 		}).catch(_err => {
 			this.loading.dismiss();
 			if (_err.error.wrongCredentials) {
@@ -42,26 +42,26 @@ export class LoginPage {
 					message: 'Une erreur est survenue',
 					buttons: ['OK']
 				}).present();
-			}		
+			}
 		});
-  }
+	}
 
-  showLoading() {
-    this.loading = this.loadingCtrl.create({
-      content: 'Please wait...',
-      dismissOnPageChange: true
-    });
-    this.loading.present();
-  }
+	showLoading() {
+		this.loading = this.loadingCtrl.create({
+			content: 'Please wait...',
+			dismissOnPageChange: true
+		});
+		this.loading.present();
+	}
 
-  showError(text) {
-    this.loading.dismiss();
+	showError(text) {
+		this.loading.dismiss();
 
-    let alert = this.alertCtrl.create({
-      title: 'Fail',
-      subTitle: text,
-      buttons: ['OK']
-    });
-    alert.present();
-  }
+		let alert = this.alertCtrl.create({
+			title: 'Fail',
+			subTitle: text,
+			buttons: ['OK']
+		});
+		alert.present();
+	}
 }

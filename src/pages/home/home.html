@@ -1,5 +1,7 @@
 <ion-content class="home" padding>
 	<search-meal></search-meal>
-	<h1>BIENVENU ... EN COURS DE DEVELOPPEMENT</h1>
-	<meal-item></meal-item>
+	<h1>Les repas les plus proches :</h1>
+	<div *ngFor="let meal of meals">
+		<meal-item [meal]="meal"></meal-item>
+	</div>
 </ion-content>

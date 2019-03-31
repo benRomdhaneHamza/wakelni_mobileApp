@@ -1,17 +1,13 @@
 <ion-card>
 	<div class="hasBackground"
-	[style.backgroundImage]="'url('+mealImage+')'"
-></div>
-		<div v-if="title" class="title_container" v-show="showText">
-			<div class="title_text textClamp">{{ title }}</div>
-		</div>
+	[style.backgroundImage]="meal.image ? 'url('+meal.image.secure_url+')' : 'url(../../assets/imgs/logo.png)'"></div>
+
 		<ion-card-content>
 			<ion-card-title>
-				Nine Inch Nails Live
+				{{ meal.name }}
 			</ion-card-title>
-			<p>
-				The most popular industrial group ever, and largely
-				responsible for bringing the music to a mass audience.
+			<p class="lineBreak">
+				{{ meal.description}}
 			</p>
 		</ion-card-content>
 </ion-card>

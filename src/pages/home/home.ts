@@ -1,19 +1,30 @@
 import { Component } from '@angular/core';
 import { NavController, IonicPage } from 'ionic-angular';
-import { AuthService } from '../../providers/auth-service/auth-service';
+import { MealsProvider } from '../../providers/meals/meals';
 import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html'
+	selector: 'page-home',
+	templateUrl: 'home.html'
 })
 export class HomePage {
+	meals: any;
+	currentUser: any = null;
 	constructor(private storage: Storage,
-		private nav: NavController,) {
+		private mealsProvider: MealsProvider,
+		private nav: NavController, ) {
 		this.storage.get('user').then((_currentUser) => {
-			console.log('_currentUser', _currentUser);
-			if (!_currentUser) this.nav.setRoot('LoginPage');
+			if (!_currentUser) return this.nav.setRoot('LoginPage');
+			this.currentUser = _currentUser;
+			this.getMeals();
 		});
+	}
+
+	getMeals() {
+		console.log('----------');
+		this.mealsProvider.getMeals().then(_meals => {
+			this.meals = _meals;
+		}).catch(_err => console.error(_err));
 	}
 }

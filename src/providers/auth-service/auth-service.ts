@@ -4,7 +4,7 @@ import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class AuthService {
-	apiUrl = 'https://wakelni-api.herokuapp.com/api/users';
+	apiUrl = 'http://localhost:8080/api/users';
 	constructor(public http: HttpClient,
 		private storage: Storage) {}
 

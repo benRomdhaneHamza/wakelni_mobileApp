@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input  } from '@angular/core';
 
 /**
  * Generated class for the MealItemComponent component.
@@ -11,6 +11,15 @@ import { Component } from '@angular/core';
 	templateUrl: 'meal-item.html'
 })
 export class MealItemComponent {
+	// PROPS
+	@Input() hero: string;
+	@Input() master: string;
+	@Input() meal: any;
+
 	mealImage = 'https://res.cloudinary.com/du7wjgy2h/image/upload/v1553383267/meals/xtsg6yi3teh9ihoae4xx.jpg'
-	constructor() { }
+	constructor() {
+	}
+
+	ngOnInit(): void {
+	}
 }
