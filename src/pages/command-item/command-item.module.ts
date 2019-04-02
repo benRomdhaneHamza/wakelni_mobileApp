@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { CommandItemPage } from './command-item';
-import { MealItemComponent } from "../../components/meal-item/meal-item";
+import { ComponentsModule } from "../../components/components.module";
 
 @NgModule({
   declarations: [
-		CommandItemPage,
-		MealItemComponent
+		CommandItemPage
   ],
   imports: [
-    IonicPageModule.forChild(CommandItemPage),
+		IonicPageModule.forChild(CommandItemPage),
+		ComponentsModule
   ],
 })
 export class CommandItemPageModule {}
