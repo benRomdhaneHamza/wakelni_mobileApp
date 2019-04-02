@@ -12,10 +12,6 @@ export class AccountPage {
 	constructor(public navCtrl: NavController, public navParams: NavParams,
 		private storage: Storage) {
   }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad AccountPage');
-	}
 	
 	logout() {
 		this.storage.remove('user');

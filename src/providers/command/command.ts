@@ -26,5 +26,12 @@ export class CommandProvider {
 		this.currentCommand.splice(this.currentCommand.findIndex((_elm) => { return _elm == _meal }), 1);
 		this.storage.set('currentCommand', this.currentCommand);
 	}
+	calculCommandPrice(_mealList) {
+		let total = 0;
+		_mealList.forEach(element => {
+			total += Number(element.price);
+		});
+		return total;
+	};
 
 }

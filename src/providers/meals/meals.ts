@@ -31,4 +31,19 @@ export class MealsProvider {
 		});
 	}
 
+	getMeal(_id) {
+		return new Promise((resolve, reject) => {
+			const headers = {
+				'Content-Type': 'application/json',
+				'x-access-token': this.currentUser.token
+			}
+			this.http.get(this.apiUrl+'/'+_id,
+				{ headers: headers }).subscribe(_meal => {
+					return resolve(_meal);
+				}, _err => {
+					return reject(_err);
+				})
+		});
+	}
+
 }
