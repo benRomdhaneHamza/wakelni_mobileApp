@@ -1,5 +1,6 @@
 import { Component, Input  } from '@angular/core';
 import { CommandProvider } from "../../providers/command/command";
+import { MealsProvider } from "../../providers/meals/meals";
 
 @Component({
 	selector: 'meal-item',
@@ -7,24 +8,24 @@ import { CommandProvider } from "../../providers/command/command";
 })
 export class MealItemComponent {
 	// PROPS
-	@Input() hero: string;
-	@Input() master: string;
 	@Input() meal: any;
+	@Input() parentComponent: String;
 
-	commands = 0;
-	constructor(private commandProvider: CommandProvider) {
+	constructor(private commandProvider: CommandProvider,
+		private mealsProvider: MealsProvider) {
 	}
 
-	ngOnInit(): void {
+	ionViewWillEnter() {
+		this.meal.count = this.mealsProvider.calculRecurrenceOfMeal(this.meal._id);
 	}
 
 	addToCommands() {
-		this.commandProvider.addMealToCommand(this.meal._id);
-		this.commands ++;
+		this.commandProvider.addMealToCommand(this.meal);
+		this.meal.count ++;
 	}
 
 	removeFromCommands() {
-		this.commandProvider.removeMealFromCommand(this.meal._id);
-		this.commands <= 0 ? this.commands = 0 : this.commands --;
+		this.commandProvider.removeMealFromCommand(this.meal);
+		this.meal.count <= 0 ? this.meal.count = 0 : this.meal.count --;
 	}
 }

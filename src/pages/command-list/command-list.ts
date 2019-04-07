@@ -11,39 +11,42 @@ import { CommandProvider } from "../../providers/command/command";
 })
 export class CommandListPage {
 
-	currentCommandIds = null;
-	currenCommandsObjects = [];
+	currentCommand = [];
 	currentCommandPrice = null;
+
+	segmentChoice = 'currentCommandCoice'
 
 	constructor(public navCtrl: NavController,
 		public navParams: NavParams,
 		private storage: Storage,
 		private modalController: ModalController,
 		private mealsProvider: MealsProvider,
-		private commandProvider: CommandProvider) {
-		
+		private commandProvider: CommandProvider) {		
 	}
 
 	ionViewWillEnter() {
-		this.currenCommandsObjects = [];
+		this.currentCommand = [];
 		this.storage.get('currentCommand').then((_currentCommand) => {
-			if (!_currentCommand) return null;
-			this.currentCommandIds = _currentCommand;
-			this.getCommandDetails(this.currentCommandIds);
-		});
+			if (!_currentCommand || !_currentCommand.length) return null
+			this.currentCommand = this.getUnique(_currentCommand, '_id');
+			this.currentCommand.forEach(async _meal => {
+				_meal.count = await this.mealsProvider.calculRecurrenceOfMeal(_meal._id);
+			});
+		});		
 	}
 
-	async getCommandDetails(_command) {
-		_command.forEach(_meal => {
-			this.currenCommandsObjects.push(this.mealsProvider.getMeal(_meal));
-		});
-		this.currenCommandsObjects = await Promise.all(this.currenCommandsObjects);
-		this.currentCommandPrice = this.commandProvider.calculCommandPrice(this.currenCommandsObjects);
-		console.log('-------', this.currentCommandPrice);
+	getUnique(arr, comp) {
+		const unique = arr
+			.map(e => e[comp])
+			// store the keys of the unique objects
+			.map((e, i, final) => final.indexOf(e) === i && i)
+			// eliminate the dead keys & store unique objects
+			.filter(e => arr[e]).map(e => arr[e]);
+		return unique;
 	}
 
-	openCommandModal(_command = undefined) {
-		this.modalController.create('CommandItemPage', { command: _command ? _command : this.currenCommandsObjects }).present();
+	validateCommand() {
+
 	}
 
 }

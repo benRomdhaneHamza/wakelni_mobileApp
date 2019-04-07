@@ -12,7 +12,6 @@ export class CommandProvider {
 
 	constructor(public http: HttpClient,
 		private storage: Storage) {
-		console.log('Hello CommandProvider Provider');
 		this.storage.get('currentCommand').then((_currentCommands) => {
 			_currentCommands && _currentCommands.length ? this.currentCommand = _currentCommands : this.currentCommand = [] ;
 		})
@@ -23,7 +22,8 @@ export class CommandProvider {
 		this.storage.set('currentCommand', this.currentCommand);
 	}
 	removeMealFromCommand(_meal) {
-		this.currentCommand.splice(this.currentCommand.findIndex((_elm) => { return _elm == _meal }), 1);
+		const index = this.currentCommand.findIndex(element => element._id === _meal._id);
+		this.currentCommand.splice(index, 1);
 		this.storage.set('currentCommand', this.currentCommand);
 	}
 	calculCommandPrice(_mealList) {

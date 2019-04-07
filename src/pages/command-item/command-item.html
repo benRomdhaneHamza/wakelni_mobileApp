@@ -12,12 +12,12 @@
 	</ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="globalBackground">
 	<div class="centerPage">
 		<ion-grid>
 			<ion-row>
 				<ion-col col-6 *ngFor="let meal of command">
-					<meal-item [meal]="meal"></meal-item>
+					<meal-item *ngIf="meal.count" [meal]="meal"></meal-item>
 				</ion-col>
 			</ion-row>
 		</ion-grid>

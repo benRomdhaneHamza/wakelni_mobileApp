@@ -5,38 +5,35 @@
 		<ion-card-title>
 			{{ meal.name }}
 		</ion-card-title>
-		<p class="lineBreak">
+		<p *ngIf="parentComponent == 'home'" class="lineBreak">
 			{{ meal.description}}
 		</p>
 		<div style="float: left; margin-top: 10px;">
-			<ion-chip>
-				<ion-label color="blue" style="font-size: 1.3em;color: blue">
-					{{ meal.price }} DT
-				</ion-label>
-			</ion-chip>
+			<ion-badge class="chipPrice">{{ meal.price }} DT</ion-badge>
 		</div>
-		<div style="float: right;">
+
+		<div style="float: right;margin-right: 10px;">
 			<ion-row>
 
-				<ion-col style="padding: 0" *ngIf="commands > 0">
+				<ion-col style="padding: 0; width: 35px;" *ngIf="meal.count > 0">
 					<div>
-						<button color="light" ion-fab mini>
-							{{ commands }}
+						<button class="fabsBtn" color="light" ion-fab mini>
+							{{ meal.count }}
 						</button>
 					</div>
 				</ion-col>
 
-				<ion-col style="padding: 0" *ngIf="commands > 0">
+				<ion-col style="padding: 0; width: 35px;" *ngIf="meal.count > 0">
 					<div>
-						<button color="danger" ion-fab mini (click)="removeFromCommands()">
+						<button class="fabsBtn" color="danger" ion-fab mini (click)="removeFromCommands()">
 							<ion-icon name="remove"></ion-icon>
 						</button>
 					</div>
 				</ion-col>
 
-				<ion-col style="padding: 0">
+				<ion-col style="padding: 0; width: 35px;">
 					<div>
-						<button color="secondary" ion-fab mini (click)="addToCommands()">
+						<button class="fabsBtn" color="secondary" ion-fab mini (click)="addToCommands()">
 							<ion-icon name="add"></ion-icon>
 						</button>
 					</div>

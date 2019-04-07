@@ -1,3 +1,42 @@
 page-command-list {
+	.commandList {
+		padding-left: -50px;
+	}
+	// .fadeIn {
+	// 	animation-name: fadeIn;
+	// 	animation-duration: 4s;
+		
+	// }
+	// @keyframes fadeIn {
+	// 	from {
+	// 		opacity: 0;
+	// 	}
+	
+	// 	to {
+	// 		opacity: 1;
+	// 	}
+	// }
 
+	// @keyframes fivePhasesFadeIn {
+	// 	0% {
+	// 		right: 0px;
+	// 	}
+	// 	100% {
+	// 		right: 50px;
+	// 	}
+	// }
+
+	// .fivePhasesFadeIn {
+	// 	animation-name: fivePhasesFadeIn;
+	// 	animation-duration: 1s;
+	// 	animation-iteration-count: infinite;
+  // 	animation-direction: alternate;
+	// 	position: relative;
+	// }
+
+	.fixPadding {
+		padding-left: 0px!important;
+		padding-right: 0px!important;
+	}
 }
+

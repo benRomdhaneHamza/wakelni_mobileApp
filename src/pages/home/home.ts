@@ -11,6 +11,7 @@ import { Storage } from '@ionic/storage';
 export class HomePage {
 	meals: any;
 	currentUser: any = null;
+	loadMeals = false;
 	constructor(private storage: Storage,
 		private mealsProvider: MealsProvider,
 		private nav: NavController, ) {
@@ -18,13 +19,17 @@ export class HomePage {
 			if (!_currentUser) return this.nav.setRoot('LoginPage');
 			this.currentUser = _currentUser;
 			this.getMeals();
+			this.loadMeals = true;
 		});
 	}
 
 	getMeals() {
-		console.log('-------')
 		this.mealsProvider.getMeals().then(_meals => {
 			this.meals = _meals;
 		}).catch(_err => console.error(_err));
+	}
+
+	ionViewWillEnter() {
+		if (this.loadMeals) this.getMeals();
 	}
 }

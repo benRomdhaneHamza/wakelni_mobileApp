@@ -15,7 +15,6 @@ export class SearchMealComponent {
   text: string;
 
   constructor() {
-    console.log('Hello SearchMealComponent Component');
     this.text = 'Hello World';
   }
 

@@ -4,10 +4,17 @@ meal-item {
 		height: 150px;
 		background-position: center;
 		background-repeat: no-repeat;
-}
-
-ul#menu li {
-	display:inline;
-}
+	}
+	ul#menu li {
+		display:inline;
+	}
+	.fabsBtn {
+		width: 30px!important;
+    height: 30px!important;
+	}
+	.chipPrice {
+		background: #f4335a;
+		font-size: 1.3em;
+	}
 
 }

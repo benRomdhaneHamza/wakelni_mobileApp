@@ -1,41 +1,51 @@
 <ion-header>
 
 	<ion-navbar>
-		<ion-title>CommandList</ion-title>
+		<ion-title>Liste des commande</ion-title>
 	</ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-	<div *ngIf="currentCommandIds && currentCommandIds.length">
-		<h3>Commande en cours</h3>
-		<ion-list>
-			<ion-item-sliding>
-				<ion-item>
-					<h2 style="float: left;">Prix total : {{ currentCommandPrice }} </h2>
-					<h2 style="float: right;">
-						<ion-icon name="arrow-dropleft"></ion-icon>&nbsp;
-						<ion-icon name="arrow-dropleft"></ion-icon>&nbsp;
-						<ion-icon name="arrow-dropleft"></ion-icon>&nbsp;
-					</h2>
-				</ion-item>
-				<ion-item-options side="right">
-					<button ion-button color="secondary">
-						<ion-icon name="checkmark"></ion-icon>
-						Valider
-					</button>
-					<button ion-button color="update" (click)="openCommandModal()">
-						<ion-icon name="clipboard"></ion-icon>
-						Modifier
-					</button>
-					<button ion-button color="danger">
-						<ion-icon name="trash"></ion-icon>
-						Supprimer
-					</button>
-				</ion-item-options>
-			</ion-item-sliding>
-		</ion-list>
-		<hr>
+<ion-content padding class="globalBackground">
+
+	<div>
+		<ion-segment [(ngModel)]="segmentChoice" mode="ios">
+			<ion-segment-button value="currentCommandCoice">
+				Commande en cours
+			</ion-segment-button>
+			<ion-segment-button value="history">
+				Historique
+			</ion-segment-button>
+		</ion-segment>
+	</div>
+
+	<div [ngSwitch]="segmentChoice">
+
+		<div *ngSwitchCase="'currentCommandCoice'">
+			<ion-grid>
+				<ion-row>
+					<ion-col col-6 *ngFor="let meal of currentCommand">
+						<meal-item *ngIf="meal.count > 0" [meal]="meal" [parentComponent]="'commandList'"></meal-item>
+					</ion-col>
+				</ion-row>
+
+				<!-- <button 
+					[disabled]="currentCommand.length <= 0"
+					ion-button outlinet color="secondary" 
+					style="position: absolute; bottom: 0; width: 85%;">
+					Passer la commande &nbsp;&nbsp;&nbsp;
+					<ion-icon name="checkmark"></ion-icon>
+				</button> -->
+
+			</ion-grid>
+		</div>
+
+		<div *ngSwitchCase="'history'">
+			<br>
+			<ion-item>
+				<h2>Historique</h2>
+			</ion-item>
+		</div>
 	</div>
 </ion-content>
