@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController, Slides } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
 import { CommandProvider } from "../../providers/command/command";
+import { Events } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -11,28 +12,53 @@ import { CommandProvider } from "../../providers/command/command";
 })
 export class CommandListPage {
 
+	@ViewChild(Slides) slides: Slides;
+
 	currentCommand = [];
 	currentCommandPrice = null;
+	commandsHistory = null;
 
-	segmentChoice = 'currentCommandCoice'
+	segmentChoice = 'currentCommandChoice'
 
 	constructor(public navCtrl: NavController,
 		public navParams: NavParams,
 		private storage: Storage,
 		private modalController: ModalController,
 		private mealsProvider: MealsProvider,
-		private commandProvider: CommandProvider) {		
+		private commandProvider: CommandProvider,
+		public events: Events) {
+
+		
 	}
 
 	ionViewWillEnter() {
+		this.events.subscribe('updatedCommand', (data) => {
+			this.storage.get('currentCommand').then(async (_currentCommand) => {
+				if (!_currentCommand || !_currentCommand.length) return null;
+				this.currentCommandPrice = await this.commandProvider.calculCommandPrice(_currentCommand);
+			});
+		});
+
 		this.currentCommand = [];
-		this.storage.get('currentCommand').then((_currentCommand) => {
-			if (!_currentCommand || !_currentCommand.length) return null
+		this.storage.get('currentCommand').then(async (_currentCommand) => {
+			if (!_currentCommand || !_currentCommand.length) return null;
+			// calcul total price of command
+			this.currentCommandPrice = await this.commandProvider.calculCommandPrice(_currentCommand);
 			this.currentCommand = this.getUnique(_currentCommand, '_id');
 			this.currentCommand.forEach(async _meal => {
 				_meal.count = await this.mealsProvider.calculRecurrenceOfMeal(_meal._id);
 			});
-		});		
+		});
+
+		// LOAD HISTORY
+		this.commandProvider.getUserCommands().then(_commands => {
+			this.commandsHistory = _commands;
+			console.log('_commands history', _commands);
+		})
+	}
+
+	ionViewWillLeave() {
+		this.events.unsubscribe('updatedCommand');
 	}
 
 	getUnique(arr, comp) {
@@ -45,8 +71,27 @@ export class CommandListPage {
 		return unique;
 	}
 
-	validateCommand() {
-
+	async openModal() {
+		let command = null;
+		command = await this.storage.get('currentCommand');
+		const data = {
+			commandLength: command.length,
+			mealsPrice: this.currentCommandPrice,
+			duration: 30,
+			space: 'restaurant X'
+		}
+		this.modalController.create('CurrentCommandDetailsPage', { 'data': data }, { cssClass: 'inset-modal' })
+			.present();
 	}
+
+	formatDate(_date) {
+		const date =  new Date(_date);
+		return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
+	}
+
+	filterCommands(_array, _value) {
+		return _array.filter(x => x.state == _value);
+	}
+
 
 }

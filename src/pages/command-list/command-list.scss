@@ -2,6 +2,15 @@ page-command-list {
 	.commandList {
 		padding-left: -50px;
 	}
+	.listItem {
+		background-color: lightcoral
+	}
+	// ******** SLIDES ***************
+
+  ion-slide {
+    padding-right: 30px;
+  }
+	// *******************************
 	// .fadeIn {
 	// 	animation-name: fadeIn;
 	// 	animation-duration: 4s;
@@ -38,5 +47,12 @@ page-command-list {
 		padding-left: 0px!important;
 		padding-right: 0px!important;
 	}
+}
+
+ion-modal.inset-modal {
+  // transparent black background overlay
+  background-color: rgba(0, 0, 0, .5) !important;
+  transition: opacity .25s ease-in-out;
+  padding: 20vh 10vw;
 }
 

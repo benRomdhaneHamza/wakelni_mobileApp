@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
+import { AuthService } from "../../providers/auth-service/auth-service";
 
 @IonicPage()
 @Component({
@@ -14,9 +15,13 @@ export class TabsPage {
 	tab3Root = 'AccountPage';
 
 	constructor(public navCtrl: NavController, public navParams: NavParams,
-		private storage: Storage) {
+		private storage: Storage,
+		private authService: AuthService) {
 			this.storage.get('user').then((_currentUser) => {
-				if (!_currentUser) return this.navCtrl.setRoot('LoginPage');
+				if (!_currentUser) {
+					this.authService.logout();
+					return this.navCtrl.setRoot('LoginPage');
+				}
 			});
   }
 

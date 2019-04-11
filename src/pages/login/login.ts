@@ -48,7 +48,7 @@ export class LoginPage {
 
 	showLoading() {
 		this.loading = this.loadingCtrl.create({
-			content: 'Please wait...',
+			content: 'Connexion en cours ...',
 			dismissOnPageChange: true
 		});
 		this.loading.present();

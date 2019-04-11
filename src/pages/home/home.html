@@ -1,6 +1,6 @@
 <ion-content class="globalBackground" padding>
 	<search-meal></search-meal>
-	<h3>Les repas les plus proches :</h3>
+	<h3 class="textOnRed">Les repas les plus proches :</h3>
 	<div *ngFor="let meal of meals">
 		<meal-item [meal]="meal" [parentComponent]="'home'"></meal-item>
 	</div>

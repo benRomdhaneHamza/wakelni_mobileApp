@@ -1,0 +1,79 @@
+<ion-header>
+
+	<ion-navbar>
+		<ion-title>Details de la commande</ion-title>
+		<ion-buttons start>
+			<button ion-button (click)="dismiss()">
+				<span ion-text color="primary" showWhen="ios">Cancel</span>
+				<ion-icon name="close" showWhen="android,browser"></ion-icon>
+			</button>
+		</ion-buttons>
+	</ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+	<ion-grid style="font-size: 1.5em;">
+		<ion-row>
+			<ion-col>
+				<div>Restaurant:</div>
+			</ion-col>
+			<ion-col style="margin-right: -30px;">
+				<div>{{ commandDetails.space }}</div>
+			</ion-col>
+		</ion-row>
+		<hr>
+		<ion-row>
+			<ion-col>
+				<div>Nombre de repas:</div>
+			</ion-col>
+			<ion-col style="margin-right: -70px;">
+				<div>{{ commandDetails.commandLength }}</div>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col>
+				<div>Prix des repas:</div>
+			</ion-col>
+			<ion-col style="margin-right: -70px;">
+				<div>{{ commandDetails.mealsPrice }} DT</div>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col>
+				<div>Frais de livraison:</div>
+			</ion-col>
+			<ion-col style="margin-right: -70px;">
+				<div>{{ deliveryFee }} DT</div>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col>
+				<div>Prix totale a payer:</div>
+			</ion-col>
+			<ion-col style="margin-right: -70px;">
+				<div>{{ deliveryFee + commandDetails.mealsPrice }} DT</div>
+			</ion-col>
+		</ion-row>
+		<ion-row>
+			<ion-col>
+				<div>Duré estimée:</div>
+			</ion-col>
+			<ion-col style="margin-right: -70px;">
+				<div>{{ duration }} Minutes</div>
+			</ion-col>
+		</ion-row>
+		<br><br>
+		<ion-row>
+				<ion-col>
+					<div></div>
+				</ion-col>
+				<ion-col>
+						<button (click)="validateCommand()" ion-button color="secondary" round>Valider ma commande</button>
+				</ion-col>
+				<ion-col>
+					<div></div>
+				</ion-col>
+			</ion-row>
+	</ion-grid>
+</ion-content>
