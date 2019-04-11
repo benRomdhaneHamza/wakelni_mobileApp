@@ -1,9 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Slides } from 'ionic-angular';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, /*ModalController*/ } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
-import { CommandProvider } from "../../providers/command/command";
-import { Events } from 'ionic-angular';
+// import { CommandProvider } from "../../providers/command/command";
 
 @IonicPage()
 @Component({
@@ -23,12 +22,10 @@ export class CommandListPage {
 	constructor(public navCtrl: NavController,
 		public navParams: NavParams,
 		private storage: Storage,
-		private modalController: ModalController,
+		//private modalController: ModalController,
 		private mealsProvider: MealsProvider,
-		private commandProvider: CommandProvider,
-		public events: Events) {
-
-		
+		//private commandProvider: CommandProvider
+		) {		
 	}
 
 	ionViewWillEnter() {

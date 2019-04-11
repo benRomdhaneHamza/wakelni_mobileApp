@@ -10,7 +10,7 @@ import { AuthService } from "../../providers/auth-service/auth-service";
 })
 export class TabsPage {
 
-	tab1Root = 'HomePage';
+	tab1Root = 'SpacePage';
 	tab2Root = 'CommandListPage';
 	tab3Root = 'AccountPage';
 

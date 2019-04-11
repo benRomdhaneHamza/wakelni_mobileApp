@@ -1,0 +1,29 @@
+<ion-card>
+	<div class="hasBackground" [style.backgroundImage]="space.logo ? 'url('+space.logo.secure_url+')' : 'url(../../assets/imgs/logo.png)'"></div>
+
+	<ion-card-content>
+		<ion-card-title>
+			{{ space.name }}
+		</ion-card-title>
+		<p *ngIf="parentComponent == 'home'" class="lineBreak">
+			{{ space.description}}
+		</p>
+		<div style="float: left; margin-top: 10px;">
+			<ion-badge class="chipPrice">{{ space.city }}</ion-badge>
+		</div>
+
+		<div style="float: right;margin-right: 10px;">
+			<ion-row>
+
+				<ion-col style="padding: 0; width: 35px;">
+					<div>
+						<button class="fabsBtn" color="secondary" ion-fab mini (click)="OpenSpace()">
+							<ion-icon name="arrow-forward"></ion-icon>
+						</button>
+					</div>
+				</ion-col>
+
+			</ion-row>
+		</div>
+	</ion-card-content>
+</ion-card>
