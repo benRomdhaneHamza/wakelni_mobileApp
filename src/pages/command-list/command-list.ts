@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, /*ModalController*/ } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
-import { CommandProvider } from "../../providers/command/command";
+// import { CommandProvider } from "../../providers/command/command";
 
 @IonicPage()
 @Component({
@@ -19,9 +19,10 @@ export class CommandListPage {
 	constructor(public navCtrl: NavController,
 		public navParams: NavParams,
 		private storage: Storage,
-		private modalController: ModalController,
+		//private modalController: ModalController,
 		private mealsProvider: MealsProvider,
-		private commandProvider: CommandProvider) {		
+		//private commandProvider: CommandProvider
+		) {		
 	}
 
 	ionViewWillEnter() {

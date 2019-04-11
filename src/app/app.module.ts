@@ -9,6 +9,7 @@ import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
 import { MealsProvider } from '../providers/meals/meals';
+import { SpacesProvider } from '../providers/spaces/spaces';
 import { CommandProvider } from '../providers/command/command';
 
 @NgModule({
@@ -28,9 +29,13 @@ import { CommandProvider } from '../providers/command/command';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    {
+      provide: ErrorHandler,
+      useClass: IonicErrorHandler
+    },
     AuthService,
     MealsProvider,
+    SpacesProvider,
     CommandProvider
   ]
 })

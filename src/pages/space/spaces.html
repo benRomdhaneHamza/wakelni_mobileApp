@@ -1,0 +1,11 @@
+<ion-content class="globalBackground" padding>
+	<search-meal></search-meal>
+	<h3>Les resto populaire :</h3>
+	<div *ngFor="let space of spaces">
+		<space-item [space]="space" [parentComponent]="'home'"></space-item>
+	</div>
+	<div *ngIf="!spaces" class="globalCentered">
+		<ion-spinner name="bubbles"></ion-spinner>
+		Chargement
+	</div>
+</ion-content>
