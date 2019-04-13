@@ -15,4 +15,4 @@ import { ComponentsModule } from "../../components/components.module";
     SpacesPage,
   ]
 })
-export class SpacePageModule {}
+export class SpacesPageModule {}
