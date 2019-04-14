@@ -30,8 +30,7 @@ export class SpaceItemComponent {
 	// }
 
 	OpenSpace() {
-		// lets open home-page wich is meals page , but we should filter by space
-		console.log('space is open ', this.space)
-		this.nav.push('HomePage');
+		// lets open home-page wich is meals page 
+		this.nav.push('HomePage' , this.space );
 	}
 }
