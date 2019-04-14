@@ -12,7 +12,7 @@ export class HomePage {
 	meals: any;
 	currentUser: any = null;
 	loadMeals = false;
-	spaceId : null ; 
+	space : any ; 
 	constructor(private storage: Storage,
 		private mealsProvider: MealsProvider,
 		private nav: NavController,
@@ -21,12 +21,13 @@ export class HomePage {
 			if (!_currentUser) return this.nav.setRoot('LoginPage');
 			this.currentUser = _currentUser;
 			this.loadMeals = true;
-			this.spaceId = navParams.get('_id');
+			this.space = navParams.get('space');
+			console.log('space', this.space);
 		});
 	}
 
 	getMeals() {
-		this.mealsProvider.getMealsBySpace(this.spaceId).then(_meals => {
+		this.mealsProvider.getMealsBySpace(this.space._id).then(_meals => {
 			this.meals = _meals;
 		}).catch(_err => console.error(_err));
 	}

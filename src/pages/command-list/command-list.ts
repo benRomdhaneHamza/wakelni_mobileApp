@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, /*ModalController*/ } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ModalController, Slides, Events } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
-// import { CommandProvider } from "../../providers/command/command";
+import { CommandProvider } from "../../providers/command/command";
 
 @IonicPage()
 @Component({
@@ -20,11 +20,12 @@ export class CommandListPage {
 	segmentChoice = 'currentCommandChoice'
 
 	constructor(public navCtrl: NavController,
+		public events: Events,
 		public navParams: NavParams,
 		private storage: Storage,
-		//private modalController: ModalController,
+		private modalController: ModalController,
 		private mealsProvider: MealsProvider,
-		//private commandProvider: CommandProvider
+		private commandProvider: CommandProvider
 		) {		
 	}
 
@@ -50,7 +51,6 @@ export class CommandListPage {
 		// LOAD HISTORY
 		this.commandProvider.getUserCommands().then(_commands => {
 			this.commandsHistory = _commands;
-			console.log('_commands history', _commands);
 		})
 	}
 
