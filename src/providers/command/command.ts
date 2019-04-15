@@ -43,10 +43,11 @@ export class CommandProvider {
 		});
 		return total;
 	};
-	passCommand(_space, _meals) {
+	passCommand(_space, _meals, _description) {
 		const data = {
 			space: _space,
-			meals: _meals
+			meals: _meals,
+			description: _description
 		}
 		return new Promise((resolve, reject) => {
 			const headers = {
