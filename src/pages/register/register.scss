@@ -1,11 +1,16 @@
 page-register {
   .login-content {
-    background: #56CA96;
+    background: #f25e68;
 
     .login-box {
-      background: #509287;
+      background: #f25e68;
       padding: 20px 20px 0px 20px;
       margin-top: 30px;
+		}
+		
+		.logo-row {
+      padding-top: 50px;
+      padding-bottom: 0px;
     }
 
     ion-row {

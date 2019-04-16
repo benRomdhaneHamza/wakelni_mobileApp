@@ -17,11 +17,12 @@ export class SpacesProvider {
 		});
 	}
 
-	getSpaces() {
+	async getSpaces() {
+		const currentUser = await this.storage.get('user');
 		return new Promise((resolve, reject) => {
 			const headers = {
 				'Content-Type': 'application/json',
-				'x-access-token': this.currentUser.token
+				'x-access-token': currentUser.token
 			}
 			this.http.get(this.apiUrl,
 				{ headers: headers }).subscribe(_spaces => {
@@ -32,11 +33,12 @@ export class SpacesProvider {
 		});
 	}
 
-	getSpace(_id) {
+	async getSpace(_id) {
+		const currentUser = await this.storage.get('user');
 		return new Promise((resolve, reject) => {
 			const headers = {
 				'Content-Type': 'application/json',
-				'x-access-token': this.currentUser.token
+				'x-access-token': currentUser.token
 			}
 			this.http.get(this.apiUrl + '/' + _id,
 				{ headers: headers }).subscribe(_space => {

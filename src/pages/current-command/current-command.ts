@@ -6,20 +6,18 @@ import { CommandProvider } from "../../providers/command/command";
 
 @IonicPage()
 @Component({
-	selector: 'page-command-list',
-	templateUrl: 'command-list.html',
+  selector: 'page-current-command',
+  templateUrl: 'current-command.html',
 })
-export class CommandListPage {
+export class CurrentCommandPage {
 
 	@ViewChild(Slides) slides: Slides;
 
 	currentCommand = [];
 	currentCommandPrice = null;
-	commandsHistory = null;
+	description: String
 
-	segmentChoice = 'currentCommandChoice';
-
-	constructor(public navCtrl: NavController,
+  constructor(public navCtrl: NavController,
 		public events: Events,
 		public navParams: NavParams,
 		private storage: Storage,
@@ -33,7 +31,7 @@ export class CommandListPage {
 		this.events.subscribe('updatedCommand', (data) => {
 			this.storage.get('currentCommand').then(async (_currentCommand) => {
 				if (!_currentCommand || !_currentCommand.length) return null;
-				this.currentCommandPrice = await this.commandProvider.calculCommandPrice(_currentCommand);
+				this.currentCommandPrice = this.commandProvider.calculCommandPrice(_currentCommand);
 			});
 		});
 
@@ -41,24 +39,15 @@ export class CommandListPage {
 		this.storage.get('currentCommand').then(async (_currentCommand) => {
 			if (!_currentCommand || !_currentCommand.length) return null;
 			// calcul total price of command
-			this.currentCommandPrice = await this.commandProvider.calculCommandPrice(_currentCommand);
+			this.currentCommandPrice = this.commandProvider.calculCommandPrice(_currentCommand);
 			this.currentCommand = this.getUnique(_currentCommand, '_id');
 			this.currentCommand.forEach(async _meal => {
 				_meal.count = await this.mealsProvider.calculRecurrenceOfMeal(_meal._id);
 			});
 		});
-
-		// LOAD HISTORY
-		this.commandProvider.getUserCommands().then(_commands => {
-			this.commandsHistory = _commands;
-		})
 	}
 
-	ionViewWillLeave() {
-		this.events.unsubscribe('updatedCommand');
-	}
-
-	getUnique(arr, comp) {
+  getUnique(arr, comp) {
 		const unique = arr
 			.map(e => e[comp])
 			// store the keys of the unique objects
@@ -75,20 +64,11 @@ export class CommandListPage {
 			commandLength: command.length,
 			mealsPrice: this.currentCommandPrice,
 			duration: 30,
-			space: 'restaurant X'
+			space: 'restaurant X',
+			description: this.description
 		}
 		this.modalController.create('CurrentCommandDetailsPage', { 'data': data }, { cssClass: 'inset-modal' })
 			.present();
 	}
-
-	formatDate(_date) {
-		const date =  new Date(_date);
-		return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
-	}
-
-	filterCommands(_array, _value) {
-		return _array.filter(x => x.state == _value);
-	}
-
 
 }

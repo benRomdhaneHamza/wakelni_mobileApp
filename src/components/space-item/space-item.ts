@@ -31,6 +31,7 @@ export class SpaceItemComponent {
 
 	OpenSpace() {
 		// lets open home-page wich is meals page 
-		this.nav.push('HomePage' , this.space );
+		this.nav.push('HomePage' , { 'space': this.space });
+		// this.nav.push('HomePage' , { 'space': this.space });
 	}
 }

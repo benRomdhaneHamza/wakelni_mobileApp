@@ -11,7 +11,7 @@
 
 	<div>
 		<ion-segment [(ngModel)]="segmentChoice" mode="ios">
-			<ion-segment-button value="currentCommandCoice">
+			<ion-segment-button value="currentCommandChoice">
 				Commande en cours
 			</ion-segment-button>
 			<ion-segment-button value="history">
@@ -22,30 +22,95 @@
 
 	<div [ngSwitch]="segmentChoice">
 
-		<div *ngSwitchCase="'currentCommandCoice'">
-			<ion-grid>
-				<ion-row>
-					<ion-col col-6 *ngFor="let meal of currentCommand">
-						<meal-item *ngIf="meal.count > 0" [meal]="meal" [parentComponent]="'commandList'"></meal-item>
-					</ion-col>
-				</ion-row>
+		<div *ngSwitchCase="'currentCommandChoice'">
+			<br><br><br><br><br>
+			<ion-slides spaceBetween="-40">
+				<ion-slide *ngFor="let meal of currentCommand">
+					<meal-item *ngIf="meal.count > 0" [meal]="meal" [parentComponent]="'commandList'"></meal-item>
+				</ion-slide>
+			</ion-slides>
 
-				<!-- <button 
-					[disabled]="currentCommand.length <= 0"
-					ion-button outlinet color="secondary" 
-					style="position: absolute; bottom: 0; width: 85%;">
-					Passer la commande &nbsp;&nbsp;&nbsp;
-					<ion-icon name="checkmark"></ion-icon>
-				</button> -->
-
-			</ion-grid>
+			<button *ngIf="currentCommandPrice" ion-button color="secondary" round block (click)="openModal()">
+				Passer la commande &nbsp;&nbsp;&nbsp;
+				<ion-icon name="checkmark"></ion-icon>&nbsp;&nbsp;&nbsp;
+				<span>Prix totale : {{ currentCommandPrice }}Dt </span>
+			</button>
 		</div>
 
 		<div *ngSwitchCase="'history'">
 			<br>
-			<ion-item>
-				<h2>Historique</h2>
-			</ion-item>
+
+			<h3 class="textOnRed" style="text-align: center">Commandes envoyés</h3>
+			<ion-scroll style="width:100%;height:30vh" scrollY="true">
+				<ion-list scroll="true">
+					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'SENT')" class="listItem">
+						<ion-avatar item-start>
+							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
+						</ion-avatar>
+						<h2>{{ command.space.name }}</h2>
+						<p>Prix totale payé : {{ command.price }}</p>
+						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-scroll>
+
+			<h3 class="textOnRed" style="text-align: center">Commandes accepté</h3>
+			<ion-scroll style="width:100%;height:30vh" scrollY="true">
+				<ion-list scroll="true">
+					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'ACCEPTED')" class="listItem">
+						<ion-avatar item-start>
+							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
+						</ion-avatar>
+						<h2>{{ command.space.name }}</h2>
+						<p>Prix totale payé : {{ command.price }}</p>
+						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-scroll>
+
+			<h3 class="textOnRed" style="text-align: center">Commandes sur le chemin</h3>
+			<ion-scroll style="width:100%;height:30vh" scrollY="true">
+				<ion-list scroll="true">
+					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'ONWAY')" class="listItem">
+						<ion-avatar item-start>
+							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
+						</ion-avatar>
+						<h2>{{ command.space.name }}</h2>
+						<p>Prix totale payé : {{ command.price }}</p>
+						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-scroll>
+
+			<h3 class="textOnRed" style="text-align: center">Commandes livré et payé</h3>
+			<ion-scroll style="width:100%;height:30vh" scrollY="true">
+				<ion-list scroll="true">
+					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'PAYED')" class="listItem">
+						<ion-avatar item-start>
+							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
+						</ion-avatar>
+						<h2>{{ command.space.name }}</h2>
+						<p>Prix totale payé : {{ command.price }}</p>
+						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-scroll>
+
+			<h3 class="textOnRed" style="text-align: center">Commandes refusé</h3>
+			<ion-scroll style="width:100%;height:30vh" scrollY="true">
+				<ion-list scroll="true">
+					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'REJECTED')" class="listItem">
+						<ion-avatar item-start>
+							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
+						</ion-avatar>
+						<h2>{{ command.space.name }}</h2>
+						<p>Prix totale payé : {{ command.price }}</p>
+						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
+					</ion-item>
+				</ion-list>
+			</ion-scroll>
+
 		</div>
 	</div>
+
 </ion-content>

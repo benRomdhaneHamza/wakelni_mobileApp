@@ -1,6 +1,7 @@
 import { Component, Input  } from '@angular/core';
 import { CommandProvider } from "../../providers/command/command";
 import { MealsProvider } from "../../providers/meals/meals";
+import { Events } from 'ionic-angular';
 
 @Component({
 	selector: 'meal-item',
@@ -12,20 +13,23 @@ export class MealItemComponent {
 	@Input() parentComponent: String;
 
 	constructor(private commandProvider: CommandProvider,
-		private mealsProvider: MealsProvider) {
+		private mealsProvider: MealsProvider,
+		public events: Events) {
 	}
 
 	ionViewWillEnter() {
 		this.meal.count = this.mealsProvider.calculRecurrenceOfMeal(this.meal._id);
 	}
 
-	addToCommands() {
-		this.commandProvider.addMealToCommand(this.meal);
+	async addToCommands() {
+		await this.commandProvider.addMealToCommand(this.meal);
 		this.meal.count ++;
+		this.events.publish('updatedCommand');
 	}
 
-	removeFromCommands() {
-		this.commandProvider.removeMealFromCommand(this.meal);
+	async removeFromCommands() {
+		await this.commandProvider.removeMealFromCommand(this.meal);
 		this.meal.count <= 0 ? this.meal.count = 0 : this.meal.count --;
+		this.events.publish('updatedCommand');
 	}
 }
