@@ -1,12 +1,19 @@
 <ion-header>
 
 	<ion-navbar>
-		<ion-title *ngIf="space && space.name">{{ space.name }}</ion-title>
+		<ion-title *ngIf="space && space.name">
+			<span style="float: left;">{{ space.name }}</span>
+		</ion-title>
 	</ion-navbar>
 
 </ion-header>
 
 <ion-content class="globalBackground" padding>
+	<ion-fab *ngIf="currentCommand && currentCommand.length" right bottom>
+		<button ion-fab color="secondary" (click)="goToCurrentCommand()">
+				<ion-icon name="checkmark"></ion-icon>
+		</button>
+	</ion-fab>
 	<h3 class="textOnRed" *ngIf="space && space.name">Les repas offert par {{ space.name }} :</h3>
 	<div *ngFor="let meal of meals">
 		<meal-item [meal]="meal" [parentComponent]="'home'"></meal-item>

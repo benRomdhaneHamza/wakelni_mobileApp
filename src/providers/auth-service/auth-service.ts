@@ -17,8 +17,8 @@ export class AuthService {
 		}
 		return new Promise((resolve, reject) => {
 			this.http.post(this.apiUrl+'/login', data,
-				{ headers:{ 'Content-Type': 'application/json'} }).subscribe(_data => {
-				this.storage.set('user', _data);
+				{ headers:{ 'Content-Type': 'application/json'} }).subscribe(async _data => {
+				await this.storage.set('user', _data);
 				return resolve(_data);
 			}, _err => {
 				return reject(_err);

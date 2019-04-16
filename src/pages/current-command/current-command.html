@@ -1,0 +1,30 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Commande en cours</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="globalBackground">
+	<ion-slides spaceBetween="-40">
+		<ion-slide *ngFor="let meal of currentCommand">
+			<meal-item *ngIf="meal.count > 0" [meal]="meal" [parentComponent]="'currentCommand'"></meal-item>
+		</ion-slide>
+	</ion-slides>
+
+	<div>
+		<h5 class="textOnRed">Description</h5>
+		<ion-textarea
+			[(ngModel)]="description"
+			style="background-color: white;font-size: 1.5em;"
+			rows="2" autosize></ion-textarea>
+	</div>
+
+	<button *ngIf="currentCommandPrice" ion-button color="secondary" round block (click)="openModal()">
+		Passer la commande &nbsp;&nbsp;&nbsp;
+		<ion-icon name="checkmark"></ion-icon>&nbsp;&nbsp;&nbsp;
+		<span>Prix totale : {{ currentCommandPrice }}Dt </span>
+	</button>
+</ion-content>
