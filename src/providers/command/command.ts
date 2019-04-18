@@ -22,7 +22,9 @@ export class CommandProvider {
 	}
 
 	addMealToCommand(_meal) {
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
+			const validMeal = await this.verifySpace(_meal.space);
+			if (!validMeal) return reject();
 			this.currentCommand.push(_meal);
 			this.storage.set('currentCommand', this.currentCommand);
 			return resolve(true)
@@ -82,6 +84,17 @@ async	getUserCommands() {
 				return reject(_err);
 			})
 		})
+	}
+
+	verifySpace(_mealSpaceId) {
+		return new Promise((resolve, reject) => {
+			this.storage.get('currentCommand').then(_meals => {
+				if (!_meals) return resolve(true);
+				if (!_meals.length) return resolve(true);
+				if (_meals[0].space != _mealSpaceId) return resolve(null);
+				return resolve(true);
+			}).catch(reject);
+		});
 	}
 
 }
