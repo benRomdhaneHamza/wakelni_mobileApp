@@ -15,19 +15,11 @@ export class SpaceItemComponent {
 	constructor(private nav: NavController,
 		private commandProvider: CommandProvider,
 		private spaceProvider: SpacesProvider) {
+
 	}
 
-	ionViewWillEnter() {}
-
-	// addToCommands() {
-	// 	this.commandProvider.addMealToCommand(this.meal);
-	// 	this.meal.count ++;
-	// }
-
-	// removeFromCommands() {
-	// 	this.commandProvider.removeMealFromCommand(this.meal);
-	// 	this.meal.count <= 0 ? this.meal.count = 0 : this.meal.count --;
-	// }
+	ionViewWillEnter() {
+	}
 
 	OpenSpace() {
 		// lets open home-page wich is meals page 
