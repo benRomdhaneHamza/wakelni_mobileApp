@@ -26,6 +26,7 @@ export class SpacesPage {
 	getSpaces() {
 		this.spaceProvider.getSpaces().then(_spaces => {
 			this.spaces = _spaces;
+			console.log('*-*-*-*-*-', this.spaces);
 		}).catch(_err => console.error(_err));
 	}
 
