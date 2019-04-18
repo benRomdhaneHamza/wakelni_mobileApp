@@ -1,7 +1,7 @@
 import { Component, Input  } from '@angular/core';
 import { CommandProvider } from "../../providers/command/command";
 import { MealsProvider } from "../../providers/meals/meals";
-import { Events } from 'ionic-angular';
+import { Events, AlertController  } from 'ionic-angular';
 
 @Component({
 	selector: 'meal-item',
@@ -14,7 +14,8 @@ export class MealItemComponent {
 
 	constructor(private commandProvider: CommandProvider,
 		private mealsProvider: MealsProvider,
-		public events: Events) {
+		public events: Events,
+		private alertCtrl: AlertController) {
 	}
 
 	ionViewWillEnter() {
@@ -22,9 +23,16 @@ export class MealItemComponent {
 	}
 
 	async addToCommands() {
-		await this.commandProvider.addMealToCommand(this.meal);
-		this.meal.count ++;
-		this.events.publish('updatedCommand');
+		this.commandProvider.addMealToCommand(this.meal).then(_res => {
+			this.meal.count ++;
+			this.events.publish('updatedCommand');
+		}).catch(() => {
+			this.alertCtrl.create({
+				title: 'Autre commande en cours',
+				subTitle: 'Vous avez une autre commande en cours, veuillez la finaliser pour créer une nouvelle',
+				buttons: ["D'accord"]
+			}).present();
+		})
 	}
 
 	async removeFromCommands() {
