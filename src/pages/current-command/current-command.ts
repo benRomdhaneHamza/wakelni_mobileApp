@@ -30,14 +30,14 @@ export class CurrentCommandPage {
 	ionViewWillEnter() {
 		this.events.subscribe('updatedCommand', (data) => {
 			this.storage.get('currentCommand').then(async (_currentCommand) => {
-				if (!_currentCommand || !_currentCommand.length) return null;
+				if (!_currentCommand || !_currentCommand.length) return this.navCtrl.pop();
 				this.currentCommandPrice = this.commandProvider.calculCommandPrice(_currentCommand);
 			});
 		});
 
 		this.currentCommand = [];
 		this.storage.get('currentCommand').then(async (_currentCommand) => {
-			if (!_currentCommand || !_currentCommand.length) return null;
+			if (!_currentCommand || !_currentCommand.length) return this.navCtrl.pop();
 			// calcul total price of command
 			this.currentCommandPrice = this.commandProvider.calculCommandPrice(_currentCommand);
 			this.currentCommand = this.getUnique(_currentCommand, '_id');

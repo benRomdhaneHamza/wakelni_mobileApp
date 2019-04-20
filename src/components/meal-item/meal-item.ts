@@ -23,9 +23,16 @@ export class MealItemComponent {
 	}
 
 	async addToCommands() {
-		await this.commandProvider.addMealToCommand(this.meal);
-		this.meal.count ++;
-		this.events.publish('updatedCommand');
+		this.commandProvider.addMealToCommand(this.meal).then(_res => {
+			this.meal.count ++;
+			this.events.publish('updatedCommand');
+		}).catch(() => {
+			this.alertCtrl.create({
+				title: 'Autre commande en cours',
+				subTitle: 'Vous avez une autre commande en cours, veuillez la finaliser pour créer une nouvelle',
+				buttons: ["D'accord"]
+			}).present();
+		})
 	}
 
 	async removeFromCommands() {

@@ -11,12 +11,15 @@
 <ion-content class="globalBackground" padding>
 	<ion-fab *ngIf="currentCommand && currentCommand.length" right bottom>
 		<button ion-fab color="secondary" (click)="goToCurrentCommand()">
-				<ion-icon name="checkmark"></ion-icon>
+			<ion-icon name="checkmark"></ion-icon>
 		</button>
 	</ion-fab>
 	<h3 class="textOnRed" *ngIf="space && space.name">Les repas offert par {{ space.name }} :</h3>
 	<div *ngFor="let meal of meals">
 		<meal-item [meal]="meal" [parentComponent]="'home'"></meal-item>
+	</div>
+	<div *ngIf="currentCommand && currentCommand.length">
+		<br><br><br>
 	</div>
 	<div *ngIf="!meals" class="globalCentered">
 		<ion-spinner name="bubbles"></ion-spinner>
