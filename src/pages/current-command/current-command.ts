@@ -13,6 +13,7 @@ export class CurrentCommandPage {
 
 	@ViewChild(Slides) slides: Slides;
 
+	
 	currentCommand = [];
 	currentCommandPrice = null;
 	description: String

@@ -3,13 +3,43 @@ page-command-list {
 		padding-left: -50px;
 	}
 	.listItem {
-		background-color: lightcoral
+		background-color: white
 	}
 	// ******** SLIDES ***************
 
   ion-slide {
     padding-right: 30px;
+	}
+	div.swiper-pagination {
+   top:20px;
+   bottom:inherit;
+}
+.slide-zoom{
+	height: 100%;
+}
+.no-scroll {
+  .scroll-content {
+    overflow: hidden !important;
   }
+}
+.accordion-list{
+	width: 100%;
+	margin: 0%;
+	background-color: color($colors,light);
+}
+.section{
+	background: white;
+	color:black;
+}
+.section-active{
+	background:rgb(250, 24, 24);
+	color: #ffffff;
+	
+}
+.list-header-no-margin{
+	margin: 0% !important;
+}
+	
 	// *******************************
 	// .fadeIn {
 	// 	animation-name: fadeIn;

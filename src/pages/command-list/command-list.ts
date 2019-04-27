@@ -1,8 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Slides, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Slides, Events, Content } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
 import { CommandProvider } from "../../providers/command/command";
+
 
 @IonicPage()
 @Component({
@@ -12,11 +13,17 @@ import { CommandProvider } from "../../providers/command/command";
 export class CommandListPage {
 
 	@ViewChild(Slides) slides: Slides;
+	@ViewChild(Content) content: Content;
 
+	commandValidationRoot = "CommandValidationPage"
+
+	filterVisible=false;
 	currentCommand = [];
 	currentCommandPrice = null;
 	commandsHistory = null;
-
+	groupedHistory=[];
+	filtredList=[];
+	queryText: any = "";
 	segmentChoice = 'currentCommandChoice';
 
 	constructor(public navCtrl: NavController,
@@ -51,6 +58,17 @@ export class CommandListPage {
 		// LOAD HISTORY
 		this.commandProvider.getUserCommands().then(_commands => {
 			this.commandsHistory = _commands;
+			 //this.groupedHistory = this.commandsHistory;
+			 console.log(this.commandsHistory);
+
+			//console.log(result);
+			this.groupedHistory=this.groupByState(this.commandsHistory);
+			
+			this.groupedHistory[0].open=true;
+			this.filtredList = this.groupedHistory;
+			console.log(this.groupedHistory);
+			
+			
 		})
 	}
 
@@ -66,6 +84,11 @@ export class CommandListPage {
 			// eliminate the dead keys & store unique objects
 			.filter(e => arr[e]).map(e => arr[e]);
 		return unique;
+	}
+	OpenCommandValidation() {
+		// lets open home-page wich is meals page 
+		this.navCtrl.push('CommandValidationPage');
+		// this.nav.push('HomePage' , { 'space': this.space });
 	}
 
 	async openModal() {
@@ -88,6 +111,49 @@ export class CommandListPage {
 
 	filterCommands(_array, _value) {
 		return _array.filter(x => x.state == _value);
+	}
+	toggleHistoryGroup(i){
+		this.filtredList[i].open=!this.filtredList[i].open;
+	}
+	groupByState(listToGroup) {
+		 var list = [];
+		listToGroup.forEach(function (hash) {
+			 return function (a) {
+				 if (!hash[a.state]) {
+					 hash[a.state] = { state: a.state, commands: [] };
+					 list.push(hash[a.state]);
+				 }
+				 hash[a.state].commands.push({
+					 description: a.description,
+					 mealList: a.mealList,
+					 price: a.price,
+					 user: a.user,
+					 space: a.space,
+					 createdAt: a.createdAt
+				 });
+			 };
+		 }(Object.create(null)));
+		 console.log(list);
+		 
+		 return list;
+	}
+	filterListCommand() {
+		this.groupedHistory=this.commandsHistory;
+		this.groupedHistory= this.groupedHistory.filter(item => {
+			return (item.state.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
+				(item.description.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
+				(item.space.name.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
+				(item.space.description.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
+				(item.space.city.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1);
+		});
+		this.filtredList=this.groupByState(this.groupedHistory);
+
+	}
+	showFilter() {
+		this.filterVisible=!this.filterVisible;	
+	}
+	segmentClick(){
+		this.content.resize();
 	}
 
 

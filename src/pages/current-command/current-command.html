@@ -22,7 +22,7 @@
 			rows="2" autosize></ion-textarea>
 	</div>
 
-	<button *ngIf="currentCommandPrice" ion-button color="secondary" round block (click)="openModal()">
+	<button *ngIf="currentCommandPrice" ion-button color="secondary" round block (click)="openModal()" >
 		Passer la commande &nbsp;&nbsp;&nbsp;
 		<ion-icon name="checkmark"></ion-icon>&nbsp;&nbsp;&nbsp;
 		<span>Prix totale : {{ currentCommandPrice }}Dt </span>
