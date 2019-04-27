@@ -11,6 +11,7 @@ import { MyApp } from './app.component';
 import { MealsProvider } from '../providers/meals/meals';
 import { SpacesProvider } from '../providers/spaces/spaces';
 import { CommandProvider } from '../providers/command/command';
+import { UsersProvider } from '../providers/users/users';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { CommandProvider } from '../providers/command/command';
     AuthService,
     MealsProvider,
     SpacesProvider,
-    CommandProvider
+    CommandProvider,
+    UsersProvider
   ]
 })
 export class AppModule {}
