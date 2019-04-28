@@ -56,7 +56,7 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-sqlite-storage": {}
+      "cordova-sqlite-storage": {},
       "cordova-plugin-firebase": {}
     },
     "platforms": [
