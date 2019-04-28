@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Platform, ActionSheetController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -19,7 +19,8 @@ export class MyApp {
 		splashScreen: SplashScreen,
 		fcm: FcmProvider,
 		toastCtrl: ToastController,
-		public firebaseNative: Firebase) {
+		public firebaseNative: Firebase,
+		public actionSheetCtrl: ActionSheetController) {
 
 		platform.ready().then(() => {
 			// Okay, so the platform is ready and our plugins are available.
@@ -27,18 +28,28 @@ export class MyApp {
 			statusBar.styleDefault();
 			splashScreen.hide();
 
-			// Get an FCM token
-			// fcm.getToken();
-			// Listen to incoming messages
 			fcm.listenToNotifications().pipe(
 				tap(msg => {
-					console.log('notif data', msg);
-					// show a toast
-					const toast = toastCtrl.create({
-						message: msg.body,
-						duration: 3000
+					// show an action sheet
+					const actionSheet = this.actionSheetCtrl.create({
+						title: msg.body,
+						buttons: [
+							{
+								text: 'Voir la commande',
+								handler: () => {
+									console.log('Voir la commande clicked', msg.commandId);
+								}
+							},
+							{
+								text: 'Fermer',
+								role: 'cancel',
+							}
+						]
 					});
-					toast.present();
+					actionSheet.present();
+					setTimeout(() => {
+						actionSheet.dismiss();
+					}, 5000);
 				})
 			).subscribe();
 		});
