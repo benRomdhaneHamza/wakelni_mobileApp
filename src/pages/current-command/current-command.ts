@@ -13,6 +13,7 @@ export class CurrentCommandPage {
 
 	@ViewChild(Slides) slides: Slides;
 
+	
 	currentCommand = [];
 	currentCommandPrice = null;
 	description: String
@@ -69,6 +70,10 @@ export class CurrentCommandPage {
 		}
 		this.modalController.create('CurrentCommandDetailsPage', { 'data': data }, { cssClass: 'inset-modal' })
 			.present();
+	}
+
+	ionViewWillLeave() {
+		this.events.unsubscribe('updatedCommand');
 	}
 
 }

@@ -8,5 +8,24 @@
 
 
 <ion-content padding class="globalBackground">
-	<button ion-button block (click)="logout()">Se déconnecter</button>
+  <form name="profileEdit" class="form-signin" ng-submit="userCtrl.saveProfile()">
+    <ion-item style="margin:16px 0px">
+      <ion-label floating>First Name</ion-label>
+      <ion-input id="firstname" type="text" [(ngModel)]="userInfo.firstname" [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+      <ion-item style="margin:16px 0px">
+      <ion-label floating>Last Name</ion-label>
+      <ion-input id="lastname" type="text" [(ngModel)]="userInfo.lastname" [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item style="margin:16px 0px">
+      <ion-label floating>Email</ion-label>
+      <ion-input id="email" type="text" [(ngModel)]="userInfo.email" [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <ion-item style="margin:16px 0px">
+      <ion-label floating>Adress</ion-label>
+      <ion-input id="adress" type="text" [(ngModel)]="userInfo.address" [ngModelOptions]="{standalone: true}"></ion-input>
+    </ion-item>
+    <button ion-button block (click)="saveModiciation()">Enregistrer</button>
+  </form>
+  <button ion-button block (click)="logout()">Se déconnecter</button>
 </ion-content>

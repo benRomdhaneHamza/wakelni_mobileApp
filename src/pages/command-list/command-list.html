@@ -1,48 +1,140 @@
-<ion-header>
+<ion-header >
 
-	<ion-navbar>
+	<ion-navbar >
 		<ion-title>Liste des commande</ion-title>
 	</ion-navbar>
-
-</ion-header>
-
-
-<ion-content padding class="globalBackground">
-
-	<div>
-		<ion-segment [(ngModel)]="segmentChoice" mode="ios">
-			<ion-segment-button value="currentCommandChoice">
+	
+		<ion-toolbar no-padding>
+		
+		<ion-segment style="width:100%;" [(ngModel)]="segmentChoice" >
+			<ion-segment-button value="currentCommandChoice" (click)="segmentClick()" >
 				Commande en cours
 			</ion-segment-button>
-			<ion-segment-button value="history">
+			<ion-segment-button value="history" (click)="segmentClick()">
 				Historique
 			</ion-segment-button>
 		</ion-segment>
-	</div>
+		
+	</ion-toolbar>
+		<div [ngSwitch]="segmentChoice" style="padding:0%;margin:0%;">
+		<ion-toolbar *ngSwitchCase="'history'" no-border>
+			<ion-row>
+				<ion-buttons start col-1>
+					<!-- Here we use left -->
+					<button ion-button icon-only (click)="showFilter()">
+						<ion-icon name="funnel"></ion-icon>
+					</button>
+				</ion-buttons>
+					
+				
+			
+			<ion-searchbar col-10 placeholder="Search" [(ngModel)]="queryText" (ionInput)="filterListCommand()" mode="ios" end></ion-searchbar>
+			</ion-row>
+			<ion-row *ngIf="filterVisible" no-padding>
+				<ion-item start>
+					<ion-label>waiting</ion-label>
+					<ion-checkbox style="margin-right:4px;" color="secondary" checked="true"></ion-checkbox>
+				</ion-item>
+				<ion-item center >
+					<ion-label>sent</ion-label>
+					<ion-checkbox style="margin-right:4px;" color="secondary" checked="false"></ion-checkbox>
+				</ion-item>
+				<ion-item start>
+					<ion-label>recived</ion-label>
+					<ion-checkbox style="margin-right:4px;" color="secondary" checked="false"></ion-checkbox>
+				</ion-item>
+				<ion-item start>
+					<ion-label>rejected</ion-label>
+					<ion-checkbox style="margin-right:4px;" color="secondary" checked="false"></ion-checkbox>
+				</ion-item>
+			</ion-row>
+		</ion-toolbar>
+		
 
-	<div [ngSwitch]="segmentChoice">
+		
+		</div>
+</ion-header>
 
-		<div *ngSwitchCase="'currentCommandChoice'">
-			<br><br><br><br><br>
-			<ion-slides spaceBetween="-40">
-				<ion-slide *ngFor="let meal of currentCommand">
-					<meal-item *ngIf="meal.count > 0" [meal]="meal" [parentComponent]="'commandList'"></meal-item>
+
+<ion-content no-padding [ngClass]="segmentChoice == 'currentCommandChoice' ? 'globalBackground no-scroll' : 'globalBackground'">
+
+	
+
+	<div [ngSwitch]="segmentChoice" style="height:100%;">
+		<div *ngSwitchCase="'currentCommandChoice'" style="height:100%;">
+			
+			<ion-slides spaceBetween="200"  pager style="background-color:whitesmoke;">
+				<ion-slide *ngFor="let meal of currentCommand" style="height:100%" no-padding>
+					<meal-item style="height:100%;" *ngIf="meal.count > 0" [meal]="meal" [parentComponent]="'commandList'"></meal-item>
 				</ion-slide>
 			</ion-slides>
 
-			<button *ngIf="currentCommandPrice" ion-button color="secondary" round block (click)="openModal()">
-				Passer la commande &nbsp;&nbsp;&nbsp;
-				<ion-icon name="checkmark"></ion-icon>&nbsp;&nbsp;&nbsp;
-				<span>Prix totale : {{ currentCommandPrice }}Dt </span>
+			<button style="text-align:center;position: absolute;bottom:-6em;left: 0;right: 0;margin-left: auto;margin-right: auto;z-index: 100; width:10em;height: 10em; border-radius: 10em;" *ngIf="currentCommandPrice" ion-button color="secondary" round block (click)="OpenCommandValidation()">
+				<span class="button-inner" style="display: -webkit-box !important; padding-bottom: 80%;">
+				<ion-icon name="checkmark" style="display: table-row;vertical-align: middle;"></ion-icon>
+				<span style="display: table-row;vertical-align: middle;">{{ currentCommandPrice }}Dt </span>
+				<span style="display: table-row;vertical-align: middle;">Commander</span>
+				</span>
 			</button>
 		</div>
-
-		<div *ngSwitchCase="'history'">
+		
+		<div *ngSwitchCase="'history'" style="height: 100%;display: flex;">
+			
 			<br>
+				<ion-list  *ngIf="filtredList.lenght!=0" class="accordion-list">
+				<ion-list-header *ngFor="let com of filtredList; let i = index" no-lines no-padding   >
+					<ion-label class="list-header-no-margin">
+						<button ion-item (click)="toggleHistoryGroup(i)" style="width:100% !important;" detail-none no-padding
+							[ngClass]="{'section-active':com.open, 'section':!com.open}">
+							<ion-icon item-left name="arrow-forward" *ngIf="!com.open"></ion-icon>
+							<ion-icon item-left name="arrow-down" *ngIf="com.open"></ion-icon>
+							<h3 style="text-align: center">{{com.state}}</h3>
+							<ion-badge item-end ion-button small color="secondary" >{{com.commands.length}}</ion-badge>
+						</button>
+						
+						<ion-list *ngIf="com.commands && com.open" no-lines style="margin:0;">
+						
+							<ion-item *ngFor="let command of com.commands;" detail-none class="listItem" text-wrap>
+								<ion-avatar item-start>
+									<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
+								</ion-avatar>
+								<h2>{{ command.space.name }}</h2>
+								<div>
+									<ion-row style="height:auto">
+										<ion-col float-left>
+											<p>Total</p>
+										</ion-col>
+										
+										<ion-badge ion-button small outline color="danger" float-right>{{ command.price }}</ion-badge>
+									</ion-row>
+									<ion-row>
 
-			<h3 class="textOnRed" style="text-align: center">Commandes envoyés</h3>
-			<ion-scroll style="width:100%;height:30vh" scrollY="true">
-				<ion-list scroll="true">
+										<ion-col float-left>
+											<p>date:</p>
+										</ion-col>
+									
+										<div float-right>{{ formatDate(command.createdAt) }}</div>
+									</ion-row>
+									
+									
+									
+								</div>
+								
+							</ion-item>
+						
+						
+						</ion-list>
+					</ion-label>
+					
+				</ion-list-header>
+				</ion-list>
+				<span  *ngIf="filtredList.lenght==0" style="margin:auto;">
+					Vous n'avez pas encore d'historique à afficher
+				</span>
+				<!--
+				<ion-list  >
+					
+					<ion-list-header class="globalBackground"><h3 class="textOnRed" style="text-align: center">Commandes envoyés</h3></ion-list-header>
 					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'SENT')" class="listItem">
 						<ion-avatar item-start>
 							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
@@ -52,11 +144,13 @@
 						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
 					</ion-item>
 				</ion-list>
-			</ion-scroll>
+			
 
-			<h3 class="textOnRed" style="text-align: center">Commandes accepté</h3>
-			<ion-scroll style="width:100%;height:30vh" scrollY="true">
-				<ion-list scroll="true">
+			
+			
+				<ion-list >
+					
+					<ion-list-header class="globalBackground"><h3 class="textOnRed" style="text-align: center">Commandes accepté</h3></ion-list-header>
 					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'ACCEPTED')" class="listItem">
 						<ion-avatar item-start>
 							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
@@ -66,11 +160,13 @@
 						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
 					</ion-item>
 				</ion-list>
-			</ion-scroll>
+			
 
-			<h3 class="textOnRed" style="text-align: center">Commandes sur le chemin</h3>
-			<ion-scroll style="width:100%;height:30vh" scrollY="true">
-				<ion-list scroll="true">
+			
+			
+				<ion-list>
+				
+					<ion-list-header class="globalBackground"><h3 class="textOnRed" style="text-align: center">Commandes sur le chemin</h3></ion-list-header>
 					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'ONWAY')" class="listItem">
 						<ion-avatar item-start>
 							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
@@ -80,11 +176,12 @@
 						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
 					</ion-item>
 				</ion-list>
-			</ion-scroll>
+			
 
-			<h3 class="textOnRed" style="text-align: center">Commandes livré et payé</h3>
-			<ion-scroll style="width:100%;height:30vh" scrollY="true">
-				<ion-list scroll="true">
+			
+			
+				<ion-list>
+					<ion-list-header class="globalBackground"><h3 class="textOnRed" style="text-align: center">Commandes livré et payé</h3></ion-list-header>
 					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'PAYED')" class="listItem">
 						<ion-avatar item-start>
 							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
@@ -94,11 +191,14 @@
 						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
 					</ion-item>
 				</ion-list>
-			</ion-scroll>
+			
 
-			<h3 class="textOnRed" style="text-align: center">Commandes refusé</h3>
-			<ion-scroll style="width:100%;height:30vh" scrollY="true">
-				<ion-list scroll="true">
+			
+			
+				<ion-list >
+					<ion-list-header class="globalBackground">
+						<h3 class="textOnRed" style="text-align: center">Commandes refusé</h3>
+				</ion-list-header>
 					<ion-item *ngFor="let command of filterCommands(commandsHistory, 'REJECTED')" class="listItem">
 						<ion-avatar item-start>
 							<img *ngIf="command.space.logo" [src]="command.space.logo.secure_url">
@@ -108,7 +208,7 @@
 						<ion-note item-end>{{ formatDate(command.createdAt) }}</ion-note>
 					</ion-item>
 				</ion-list>
-			</ion-scroll>
+			-->
 
 		</div>
 	</div>

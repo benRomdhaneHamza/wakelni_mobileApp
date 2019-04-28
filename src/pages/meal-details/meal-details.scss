@@ -1,14 +1,9 @@
-meal-item {
+page-meal-details {
 	.hasBackground{
-		
+		background-size: cover;
 		height: 150px;
-		
-		
-		
-	}
-	.hasBackground-command{
-		height: 150px;
-		width: 150px;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 	ul#menu li {
 		display:inline;
@@ -21,6 +16,4 @@ meal-item {
 		background: #f4335a;
 		font-size: 1.3em;
 	}
-
-
 }

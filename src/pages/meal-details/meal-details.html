@@ -1,0 +1,28 @@
+<ion-header>
+
+	<ion-navbar>
+		<ion-title *ngIf="meal && meal.name">
+			<span style="float: left;">{{ meal.name }}</span>
+		</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+<ion-content class="globalBackground" padding>
+ 
+      <div class="hasBackground" 
+        [style.backgroundImage]="meal.image ? 'url('+meal.image.secure_url+')' : 'url(../../assets/imgs/logo.png)'" 
+        >
+      </div>
+      <div style="position: absolute;top: 135px;right: 25px;">
+          <ion-badge class="chipPrice">{{ meal.price }} DT</ion-badge>
+      </div>
+        <title>
+          {{ meal.name }}
+        </title>
+        <p  class="lineBreak">
+          {{ meal.description}}
+        </p>
+        
+
+</ion-content>
