@@ -60,6 +60,7 @@ const config = {
 		MealsProvider,
 		SpacesProvider,
 		CommandProvider,
+		UsersProvider,
     FcmProvider,
 
 		// *********FIREBASE STUFF *********************
