@@ -1,5 +1,8 @@
-<ion-card>
-	<div class="hasBackground" [style.backgroundImage]="meal.image ? 'url('+meal.image.secure_url+')' : 'url(../../assets/imgs/logo.png)'"></div>
+<ion-card >
+	<div class="hasBackground" 
+		[style.backgroundImage]="meal.image ? 'url('+meal.image.secure_url+')' : 'url(../../assets/imgs/logo.png)'" 
+		(click) ="doSomething()">
+	</div>
 
 	<ion-card-content>
 		<ion-card-title>
