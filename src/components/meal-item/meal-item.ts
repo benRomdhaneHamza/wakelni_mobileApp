@@ -1,7 +1,7 @@
 import { Component, Input  } from '@angular/core';
 import { CommandProvider } from "../../providers/command/command";
 import { MealsProvider } from "../../providers/meals/meals";
-import { Events, AlertController  } from 'ionic-angular';
+import { Events , AlertController,NavController } from 'ionic-angular';
 
 @Component({
 	selector: 'meal-item',
@@ -14,6 +14,7 @@ export class MealItemComponent {
 
 	constructor(private commandProvider: CommandProvider,
 		private mealsProvider: MealsProvider,
+		private nav: NavController,
 		public events: Events,
 		private alertCtrl: AlertController) {
 	}
@@ -39,5 +40,10 @@ export class MealItemComponent {
 		await this.commandProvider.removeMealFromCommand(this.meal);
 		this.meal.count <= 0 ? this.meal.count = 0 : this.meal.count --;
 		this.events.publish('updatedCommand');
+	}
+
+	async doSomething(){
+		console.log(this.meal.name + " clicked");
+		this.nav.push('MealDetailsPage' , { 'meal': this.meal });
 	}
 }

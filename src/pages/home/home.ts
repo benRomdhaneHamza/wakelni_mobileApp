@@ -21,10 +21,11 @@ export class HomePage {
 		private navParams: NavParams) {
 		this.storage.get('user').then((_currentUser) => {
 			if (!_currentUser) return this.nav.setRoot('LoginPage');
+			this.space = this.navParams.get('space');
+			
+			console.log('space', this.space);
 			this.currentUser = _currentUser;
 			this.loadMeals = true;
-			this.space = navParams.get('space');
-			console.log('space', this.space);
 		});		
 	}
 
@@ -35,8 +36,8 @@ export class HomePage {
 	}
 
 	ionViewWillEnter() {
+		
 		if (this.loadMeals) this.getMeals();
-
 		this.storage.get('currentCommand').then(_currentCommand => {
 			this.currentCommand = _currentCommand;
 		});
