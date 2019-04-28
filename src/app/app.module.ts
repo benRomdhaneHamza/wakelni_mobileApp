@@ -7,10 +7,13 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from "@angular/common/http";
 import { IonicStorageModule } from '@ionic/storage';
 
+import { ComponentsModule } from "../components/components.module";
+
 import { MyApp } from './app.component';
 import { MealsProvider } from '../providers/meals/meals';
 import { SpacesProvider } from '../providers/spaces/spaces';
 import { CommandProvider } from '../providers/command/command';
+import { UsersProvider } from '../providers/users/users';
 
 // *********FIREBASE STUFF *********************
 import { Firebase } from '@ionic-native/firebase';
@@ -35,7 +38,8 @@ const config = {
 	],
 	imports: [
 		BrowserModule,
-		HttpClientModule,
+    HttpClientModule,
+    ComponentsModule,
 		IonicModule.forRoot(MyApp),
 		IonicStorageModule.forRoot(),
 
@@ -59,6 +63,7 @@ const config = {
 		MealsProvider,
 		SpacesProvider,
 		CommandProvider,
+		UsersProvider,
     FcmProvider,
 
 		// *********FIREBASE STUFF *********************
