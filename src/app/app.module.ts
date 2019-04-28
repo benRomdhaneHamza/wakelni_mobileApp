@@ -7,6 +7,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { HttpClientModule } from "@angular/common/http";
 import { IonicStorageModule } from '@ionic/storage';
 
+import { ComponentsModule } from "../components/components.module";
+
 import { MyApp } from './app.component';
 import { MealsProvider } from '../providers/meals/meals';
 import { SpacesProvider } from '../providers/spaces/spaces';
@@ -36,7 +38,8 @@ const config = {
 	],
 	imports: [
 		BrowserModule,
-		HttpClientModule,
+    HttpClientModule,
+    ComponentsModule,
 		IonicModule.forRoot(MyApp),
 		IonicStorageModule.forRoot(),
 
