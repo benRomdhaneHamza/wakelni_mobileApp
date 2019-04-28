@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "839423177030",
+    "firebase_url": "https://wakelni-bc31e.firebaseio.com",
+    "project_id": "wakelni-bc31e",
+    "storage_bucket": "wakelni-bc31e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839423177030:android:eb6838242ca95098",
+        "android_client_info": {
+          "package_name": "io.ionic.wakelni"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839423177030-vhe3ts00at5qo188v50ad062s0vqojg3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3nndlGkeI0YhYk122UHAHb0jJNiooDyI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839423177030-vhe3ts00at5qo188v50ad062s0vqojg3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

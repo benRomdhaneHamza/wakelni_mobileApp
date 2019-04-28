@@ -47,6 +47,8 @@ export class MealsProvider {
 					const meals = this.convertObjToArray(_meals);
 					meals.forEach(async element => {
 						element.count = await this.calculRecurrenceOfMeal(element._id)
+						console.log(element);
+						
 					});
 					return resolve(_meals);
 				}, _err => {
