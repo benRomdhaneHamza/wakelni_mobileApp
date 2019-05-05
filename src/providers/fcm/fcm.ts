@@ -35,7 +35,6 @@ export class FcmProvider {
 		// Post the token to your node server
 		this.http.post(this.apiUrl + '/fcmToken', { token: token }, { headers: headers })
 			.subscribe(data => {
-				console.log(JSON.stringify(data));
 			}, error => {
 				console.log("err");
 				console.log(JSON.stringify(error));

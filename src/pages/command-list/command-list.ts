@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Slides, Events, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Slides, Events, Content, Loading, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
 import { CommandProvider } from "../../providers/command/command";
@@ -25,6 +25,7 @@ export class CommandListPage {
 	filtredList=[];
 	queryText: any = "";
 	segmentChoice = 'currentCommandChoice';
+	loading: Loading;
 
 	constructor(public navCtrl: NavController,
 		public events: Events,
@@ -32,7 +33,8 @@ export class CommandListPage {
 		private storage: Storage,
 		private modalController: ModalController,
 		private mealsProvider: MealsProvider,
-		private commandProvider: CommandProvider
+		private commandProvider: CommandProvider,
+		private loadingCtrl: LoadingController
 		) {		
 	}
 
@@ -59,16 +61,11 @@ export class CommandListPage {
 		this.commandProvider.getUserCommands().then(_commands => {
 			this.commandsHistory = _commands;
 			 //this.groupedHistory = this.commandsHistory;
-			 console.log(this.commandsHistory);
 
-			//console.log(result);
 			this.groupedHistory=this.groupByState(this.commandsHistory);
 			
 			this.groupedHistory[0].open=true;
-			this.filtredList = this.groupedHistory;
-			console.log(this.groupedHistory);
-			
-			
+			this.filtredList = this.groupedHistory;			
 		})
 	}
 
@@ -85,10 +82,18 @@ export class CommandListPage {
 			.filter(e => arr[e]).map(e => arr[e]);
 		return unique;
 	}
-	OpenCommandValidation() {
+	async OpenCommandValidation() {
 		// lets open home-page wich is meals page 
-		this.navCtrl.push('CommandValidationPage');
+		// this.navCtrl.push('CommandValidationPage');
 		// this.nav.push('HomePage' , { 'space': this.space });
+
+		this.showLoading()
+		const command = await this.storage.get('currentCommand');
+		const commandIds = command.map(_obj => _obj._id);
+		const spaceId = command[0].space;
+		await this.commandProvider.passCommand(spaceId, commandIds, '');
+		this.commandProvider.clearCurrentCommand();
+		this.navCtrl.setRoot('SpacesPage');
 	}
 
 	async openModal() {
@@ -133,7 +138,6 @@ export class CommandListPage {
 				 });
 			 };
 		 }(Object.create(null)));
-		 console.log(list);
 		 
 		 return list;
 	}
@@ -154,6 +158,14 @@ export class CommandListPage {
 	}
 	segmentClick(){
 		this.content.resize();
+	}
+
+	showLoading() {
+		this.loading = this.loadingCtrl.create({
+			content: 'Envoi de la commande ...',
+			dismissOnPageChange: true
+		});
+		this.loading.present();
 	}
 
 

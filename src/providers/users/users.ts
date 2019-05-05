@@ -24,7 +24,6 @@ export class UsersProvider {
   
   async updateUser() {
 		const currentUser = await this.storage.get('user');
-		console.log(currentUser)
 		return new Promise((resolve, reject) => {
 			const headers = {
 				'Content-Type': 'application/json',
