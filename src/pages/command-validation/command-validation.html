@@ -13,6 +13,49 @@
 </ion-header>
 
 
-<ion-content padding>
-  <here-map appId="S5Zz67ekDmTFL5dlwV8w" appCode="c40NYxrFjGSy62UOsPUScQ" lat="48.866667" lng="2.333333"></here-map>
+<ion-content padding  class="no-scroll">
+  <div class="autocomplete" style="width:100%;height: 100 px;;position:absolute;z-index:100;background:linear-gradient( rgba(255,255,255,1), rgba(255,255,255,0.2));">
+    
+    <ion-searchbar style="width:100%;" [(ngModel)]="searchText"
+		(ionFocus)="addFocus()"
+		(ionInput)="search()"
+		(ionBlur)="removeFocus()"
+    debounce=500></ion-searchbar>
+    <ion-list no-lines no-padding *ngIf="hideMe">
+      <ion-item *ngFor="let res of countries" >
+        {{res}}
+      </ion-item>
+    </ion-list>
+    <!--<ion-scroll style="width:100%;height:140px;" scrollY="true">
+    <ion-list style="max-height:140px !important;" no-lines>
+      <ion-item >
+         item 
+      </ion-item>
+      
+    </ion-list>
+    </ion-scroll>-->
+  </div>
+  
+  <here-map appId="S5Zz67ekDmTFL5dlwV8w" appCode="c40NYxrFjGSy62UOsPUScQ" lat="{{lat}}" lng="{{lng}}"></here-map>
+  <ion-fab right bottom #fab>
+    <button ion-fab color="light">
+        <ion-icon name="md-options"></ion-icon>
+    </button>
+    
+      
+    
+    <ion-fab-list side="top">
+      <button ion-fab (click)="autoLocate(fab)">
+        <ion-icon name="md-locate"></ion-icon>
+      </button>
+      <button ion-fab (click)="manuallyLocate(fab)">
+        <ion-icon name="md-flag"></ion-icon>
+      </button>
+      <button ion-fab *ngIf="map.currentMarker!=null" (click)="showPrompt(fab)">
+        <ion-icon name="md-bookmarks"></ion-icon>
+      </button>
+    </ion-fab-list>
+  </ion-fab>
+    
+  
 </ion-content>

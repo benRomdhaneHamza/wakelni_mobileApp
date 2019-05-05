@@ -13,6 +13,8 @@ import { MyApp } from './app.component';
 import { MealsProvider } from '../providers/meals/meals';
 import { SpacesProvider } from '../providers/spaces/spaces';
 import { CommandProvider } from '../providers/command/command';
+import { Geolocation } from '@ionic-native/geolocation';
+
 
 @NgModule({
   declarations: [
@@ -30,8 +32,10 @@ import { CommandProvider } from '../providers/command/command';
     MyApp
   ],
   providers: [
+    Geolocation,
     StatusBar,
     SplashScreen,
+    
     {
       provide: ErrorHandler,
       useClass: IonicErrorHandler

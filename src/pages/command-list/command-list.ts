@@ -62,11 +62,14 @@ export class CommandListPage {
 			 console.log(this.commandsHistory);
 
 			//console.log(result);
-			this.groupedHistory=this.groupByState(this.commandsHistory);
+			if(this.groupedHistory.length!=0){
+				this.groupedHistory = this.groupByState(this.commandsHistory);
+
+				this.groupedHistory[0].open = true;
+				this.filtredList = this.groupedHistory;
+				console.log(this.groupedHistory);
+			}
 			
-			this.groupedHistory[0].open=true;
-			this.filtredList = this.groupedHistory;
-			console.log(this.groupedHistory);
 			
 			
 		})
