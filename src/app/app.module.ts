@@ -15,35 +15,64 @@ import { SpacesProvider } from '../providers/spaces/spaces';
 import { CommandProvider } from '../providers/command/command';
 import { Geolocation } from '@ionic-native/geolocation';
 
+import { UsersProvider } from '../providers/users/users';
+
+// *********FIREBASE STUFF *********************
+import { Firebase } from '@ionic-native/firebase';
+
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { FcmProvider } from '../providers/fcm/fcm';
+
+const config = {
+	apiKey: "AIzaSyCwlbg0JdKXJFlLHIyDZaS9mS3JkQvUWpI",
+	authDomain: "wakelni-bc31e.firebaseapp.com",
+	databaseURL: "https://wakelni-bc31e.firebaseio.com",
+	projectId: "wakelni-bc31e",
+	storageBucket: "wakelni-bc31e.appspot.com",
+	messagingSenderId: "839423177030"
+}
+// ***************************************************
 
 @NgModule({
-  declarations: [
+	declarations: [
 		MyApp
-  ],
-  imports: [
+	],
+	imports: [
 		BrowserModule,
     HttpClientModule,
     ComponentsModule,
 		IonicModule.forRoot(MyApp),
-		IonicStorageModule.forRoot()
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp
-  ],
-  providers: [
-    Geolocation,
-    StatusBar,
-    SplashScreen,
-    
-    {
-      provide: ErrorHandler,
-      useClass: IonicErrorHandler
-    },
-    AuthService,
-    MealsProvider,
-    SpacesProvider,
-    CommandProvider
-  ]
+		IonicStorageModule.forRoot(),
+
+		// *********FIREBASE STUFF *********************
+		AngularFireModule.initializeApp(config), 
+    AngularFirestoreModule,
+		// ***************************************************
+	],
+	bootstrap: [IonicApp],
+	entryComponents: [
+		MyApp
+	],
+	providers: [
+		Geolocation,
+		StatusBar,
+		SplashScreen,
+		{
+			provide: ErrorHandler,
+			useClass: IonicErrorHandler
+		},
+		AuthService,
+		MealsProvider,
+		SpacesProvider,
+		CommandProvider,
+		UsersProvider,
+    FcmProvider,
+
+		// *********FIREBASE STUFF *********************
+		Firebase,
+    FcmProvider
+		// ***************************************************
+	]
 })
-export class AppModule {}
+export class AppModule { }

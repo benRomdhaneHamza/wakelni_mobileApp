@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, Loading, IonicPage } from 'ionic-angular';
 import { AuthService } from '../../providers/auth-service/auth-service';
+import { FcmProvider } from '../../providers/fcm/fcm';
 import { Storage } from '@ionic/storage';
 
 @IonicPage()
@@ -14,6 +15,7 @@ export class LoginPage {
 
 	constructor(private nav: NavController,
 		private auth: AuthService,
+		private fcmProvider: FcmProvider,
 		private alertCtrl: AlertController,
 		private loadingCtrl: LoadingController,
 		private storage: Storage) {
@@ -29,20 +31,13 @@ export class LoginPage {
 	public login() {
 		this.showLoading();
 		this.auth.login(this.loginCredentials).then(_res => {
-			this.nav.setRoot('TabsPage');
+			this.fcmProvider.getToken().then(() => {
+				this.nav.setRoot('TabsPage');
+			}).catch(_err => {
+				this.catchLoginError(_err);
+			});
 		}).catch(_err => {
-			this.loading.dismiss();
-			if (_err.error.wrongCredentials) {
-				this.alertCtrl.create({
-					message: 'Veuillez verifier vos données',
-					buttons: ['OK']
-				}).present();
-			} else {
-				this.alertCtrl.create({
-					message: 'Une erreur est survenue',
-					buttons: ['OK']
-				}).present();
-			}
+			this.catchLoginError(_err);
 		});
 	}
 
@@ -63,5 +58,20 @@ export class LoginPage {
 			buttons: ['OK']
 		});
 		alert.present();
+	}
+
+	catchLoginError(_err) {
+		this.loading.dismiss();
+			if (_err.error.wrongCredentials) {
+				this.alertCtrl.create({
+					message: 'Veuillez verifier vos données',
+					buttons: ['OK']
+				}).present();
+			} else {
+				this.alertCtrl.create({
+					message: 'Une erreur est survenue',
+					buttons: ['OK']
+				}).present();
+			}
 	}
 }

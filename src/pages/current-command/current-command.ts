@@ -72,4 +72,8 @@ export class CurrentCommandPage {
 			.present();
 	}
 
+	ionViewWillLeave() {
+		this.events.unsubscribe('updatedCommand');
+	}
+
 }
