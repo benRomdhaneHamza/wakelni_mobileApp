@@ -13,6 +13,7 @@ import { MyApp } from './app.component';
 import { MealsProvider } from '../providers/meals/meals';
 import { SpacesProvider } from '../providers/spaces/spaces';
 import { CommandProvider } from '../providers/command/command';
+
 import { Geolocation } from '@ionic-native/geolocation';
 
 import { UsersProvider } from '../providers/users/users';
@@ -23,6 +24,7 @@ import { Firebase } from '@ionic-native/firebase';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { FcmProvider } from '../providers/fcm/fcm';
+import { AddressesProvider } from '../providers/addresse/addresses';
 
 const config = {
 	apiKey: "AIzaSyCwlbg0JdKXJFlLHIyDZaS9mS3JkQvUWpI",
@@ -67,7 +69,8 @@ const config = {
 		SpacesProvider,
 		CommandProvider,
 		UsersProvider,
-    FcmProvider,
+		FcmProvider,
+		AddressesProvider,
 
 		// *********FIREBASE STUFF *********************
 		Firebase,

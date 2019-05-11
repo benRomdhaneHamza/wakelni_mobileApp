@@ -1,8 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
-import { AlertController } from 'ionic-angular';
-
+import { AlertController, ModalController } from 'ionic-angular';
+import {Storage} from "@ionic/storage";
+import { AddressesProvider } from "../../providers/addresse/addresses";
+import { CommandProvider } from "../../providers/command/command";
 import { HereMapComponent } from '../../components/here-map/here-map';
 
 
@@ -19,23 +21,16 @@ import { HereMapComponent } from '../../components/here-map/here-map';
   templateUrl: 'command-validation.html',
 })
 export class CommandValidationPage {
+  currentCommand = [];
+  currentCommandPrice = null;
+  description: String = "";
+  mapHeight = '100%';
   hideMe = false;
-  private list: string[] = ['Argentina',
-    'Bolivia',
-    'Brazil',
-    'Chile',
-    'Colombia',
-    'Ecuador',
-    'French Guiana',
-    'Guyana',
-    'Paraguay',
-    'Peru',
-    'Suriname',
-    'Uruguay',
-    'Venezuela'];
+  currentUser: any;
+  private list:[any] ;
   public searchText: string = '';
   public countries: string[] = [];
-
+  public currentAddress= null;
   lat = 48.866667 ;
   lng = 2.333333;
   message="123"
@@ -45,14 +40,34 @@ export class CommandValidationPage {
        }
   @ViewChild(HereMapComponent) map: HereMapComponent;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams, private geolocation: Geolocation, public alertCtrl: AlertController) {
+  constructor(private storage: Storage,
+     public navCtrl: NavController, 
+     public navParams: NavParams, 
+     private geolocation: Geolocation,
+      public alertCtrl: AlertController, 
+      public commandProvider: CommandProvider,
+      public adressesProvider: AddressesProvider,
+    private modalController: ModalController,) {
   }
 
-
+  ionViewWillEnter() {
+      this.storage.get('currentCommand').then(async (_currentCommand) => {
+        if (!_currentCommand || !_currentCommand.length) return this.navCtrl.pop();
+        this.currentCommandPrice = this.commandProvider.calculCommandPrice(_currentCommand);
+      });
+    
+  }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CommandValidationPage');
+    this.initUser();
     
+  }
+  initUser(){
+    this.storage.get('user').then((_currentUser) => {
+      this.currentUser = _currentUser
+       this.list = this.currentUser.address.address;
+    })
   }
   async autoLocate(fab){
     fab.close();
@@ -61,7 +76,6 @@ export class CommandValidationPage {
         this.lat = resp.coords.latitude;
         this.lng= resp.coords.longitude;
         this.message="YES 1"
-        console.log(this.map);
       }, (error) => {
         this.message=error;
       }).catch((err) => {
@@ -74,8 +88,7 @@ export class CommandValidationPage {
       this.lat= data.coords.latitude
       this.lng= data.coords.longitude
       this.message="YES"
-      
-      this.map.setCenter(this.lat, this.lng)
+      this.map.setMarkerCenter(this.lat, this.lng)
       observer.unsubscribe();
     });
     
@@ -84,7 +97,11 @@ export class CommandValidationPage {
     fab.close();
     this.map.addMrkerOnClick();
   }
-
+  selectAddress(_address){
+    console.log(_address);
+    this.currentAddress = _address;
+    this.map.setMarkerCenter(_address.lat,_address.lng);
+  }
   
   removeFocus() {
     this.hideMe = false;
@@ -98,8 +115,11 @@ export class CommandValidationPage {
       this.countries = [];
       return;
     }
-
-    this.countries = this.list.filter(item => item.toUpperCase().includes(this.searchText.toUpperCase()));
+    this.countries = this.list.filter(item => {
+      return (item.city.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1) ||
+        (item.description.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1) ;
+    });
+      //item.description.toUpperCase().includes(this.searchText.toUpperCase()));
   }
   showPrompt(fab) {
     fab.close();
@@ -123,12 +143,30 @@ export class CommandValidationPage {
         {
           text: 'Save',
           handler: data => {
+            this.adressesProvider.addUserAddress(data.description,this.map.lat,this.map.lng,"paris").then(user =>{
+              console.log(user);
+              this.mapHeight = '50%';
+            });
             console.log('Saved clicked'+data.description);
           }
         }
       ]
     });
     prompt.present();
+  }
+  async openModal() {
+    let command = null;
+    command = await this.storage.get('currentCommand');
+    const data = {
+      commandLength: command.length,
+      mealsPrice: this.currentCommandPrice,
+      duration: 30,
+      space: 'restaurant X',
+      description: this.description,
+      address: this.currentAddress
+    }
+    this.modalController.create('CurrentCommandDetailsPage', { 'data': data }, { cssClass: 'inset-modal' })
+      .present();
   }
 
 }

@@ -14,16 +14,16 @@
 
 
 <ion-content padding  class="no-scroll">
-  <div class="autocomplete" style="width:100%;height: 100 px;;position:absolute;z-index:100;background:linear-gradient( rgba(255,255,255,1), rgba(255,255,255,0.2));">
+  <div class="autocomplete" style="width:100%;height: 100 px;position:absolute;z-index:100;background:linear-gradient( rgba(255,255,255,1), rgba(255,255,255,0.2));">
     
     <ion-searchbar style="width:100%;" [(ngModel)]="searchText"
 		(ionFocus)="addFocus()"
 		(ionInput)="search()"
-		(ionBlur)="removeFocus()"
+		
     debounce=500></ion-searchbar>
     <ion-list no-lines no-padding *ngIf="hideMe">
-      <ion-item *ngFor="let res of countries" >
-        {{res}}
+      <ion-item *ngFor="let res of countries">
+        <ion-row  (click)="selectAddress(res)">{{res.description}}</ion-row>
       </ion-item>
     </ion-list>
     <!--<ion-scroll style="width:100%;height:140px;" scrollY="true">
@@ -36,7 +36,9 @@
     </ion-scroll>-->
   </div>
   
-  <here-map appId="S5Zz67ekDmTFL5dlwV8w" appCode="c40NYxrFjGSy62UOsPUScQ" lat="{{lat}}" lng="{{lng}}"></here-map>
+  <here-map appId="S5Zz67ekDmTFL5dlwV8w" [style.height]="currentAddress == null ? '100%' : '50%'" appCode="c40NYxrFjGSy62UOsPUScQ" lat="{{lat}}" lng="{{lng}}" height="{{mapHeight}}"></here-map>
+  <ion-label stacked>Ajouter une description a cette commande</ion-label>
+  <ion-textarea style="height:40%;border:solid 1px lightcoral;" [(ngModel)]="description"></ion-textarea>
   <ion-fab right bottom #fab>
     <button ion-fab color="light">
         <ion-icon name="md-options"></ion-icon>
@@ -56,6 +58,13 @@
       </button>
     </ion-fab-list>
   </ion-fab>
-    
+    <button *ngIf="currentAddress!= null"
+      style="text-align:center;position: absolute;bottom:-6em;left: 0;right: 0;margin-left: auto;margin-right: auto;z-index: 100; width:10em;height: 10em; border-radius: 10em;"
+      ion-button color="secondary" round block (click)="openModal()">
+      <span class="button-inner" style="display: -webkit-box !important; padding-bottom: 80%;">
+        <ion-icon name="checkmark" style="display: table-row;vertical-align: middle;"></ion-icon>
+        <span style="display: table-row;vertical-align: middle;">Commander</span>
+      </span>
+    </button>
   
 </ion-content>

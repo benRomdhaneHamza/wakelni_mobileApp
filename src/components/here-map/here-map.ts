@@ -22,6 +22,8 @@ export class HereMapComponent implements OnInit {
 
   @Input()
   public lng: any;
+  @Input()
+  public height: any;
   self = this;
   map=null;
   currentMarker = null;
@@ -51,8 +53,10 @@ export class HereMapComponent implements OnInit {
     );
     let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
   }
-  setCenter(lat,lng){
+  setMarkerCenter(lat,lng){
     console.log(lat + "," +lng );
+    this.lat = lat;
+    this.lng = lng;
     this.map.setCenter({lat,lng});
     this.map.removeObjects(this.map.getObjects())
     this.currentMarker = new H.map.Marker({ lat: lat, lng: lng });
@@ -61,6 +65,7 @@ export class HereMapComponent implements OnInit {
     console.log(this.lat + "," + this.lng);
     console.log(lat)
   }
+  
   addMrkerOnClick() {
   // Attach an event listener to map display
   // obtain the coordinates and display in an alert box.
@@ -76,11 +81,13 @@ export class HereMapComponent implements OnInit {
     );
     var loc = coord.lat + "," + coord.lng ;
     console.log(loc);
+    this.lat = coord.lat;
+    this.lng = coord.lng;
     this.map.removeObjects(this.map.getObjects())
     this.currentMarker = new H.map.Marker({ lat: coord.lat, lng: coord.lng });
     this.map.addObject(this.currentMarker);
     this.map.removeEventListener('tap',this.addMarker,false,this);
-    this.retrieveAddress(coord.lat, coord.lng)
+    this.retrieveAddress(this.lat,this.lng);
   }
   retrieveAddress(lat,lng){
     let location = lat + "," + lng + ",500";
