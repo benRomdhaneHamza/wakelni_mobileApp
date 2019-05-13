@@ -41,7 +41,10 @@ export class CommandListPage {
 	ionViewWillEnter() {
 		this.events.subscribe('updatedCommand', (data) => {
 			this.storage.get('currentCommand').then(async (_currentCommand) => {
-				if (!_currentCommand || !_currentCommand.length) return null;
+				if (!_currentCommand || !_currentCommand.length) {
+					this.currentCommandPrice = 0;
+					return null;
+				}
 				this.currentCommandPrice = await this.commandProvider.calculCommandPrice(_currentCommand);
 			});
 		});
