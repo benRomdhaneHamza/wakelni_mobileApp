@@ -8,12 +8,28 @@ page-command-validation {
 }
 .scroll-content {
     padding:0% !important;
-  }
+	}
+.fab-address{
+	color:black;
+  background-color:gold;
+}
+.fab-address-element{
+	color:whitesmoke;
+  background-color:gold;
+}
+.fab-search{
+	color: gold;
+	background-color: #488aff;
+}
 .autocomplete {
 	width: 100%;
 
 	ion-searchbar {
 		padding: 1px !important;
+		
+		searchbar-input{
+			border-radius: 50vh;
+		}
 	}
 
 	ion-list {

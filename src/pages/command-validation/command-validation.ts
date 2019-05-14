@@ -1,5 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { IonicPage, NavController, NavParams, Loading, LoadingController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
 import { AlertController, ModalController } from 'ionic-angular';
 import {Storage} from "@ionic/storage";
@@ -21,11 +21,15 @@ import { HereMapComponent } from '../../components/here-map/here-map';
   templateUrl: 'command-validation.html',
 })
 export class CommandValidationPage {
+  @ViewChild('preValidationInformation', { read: ElementRef }) cardViewRef: ElementRef;
+  cardHeight: number;
   currentCommand = [];
   currentCommandPrice = null;
   description: String = "";
   mapHeight = '100%';
+  mapWidth = '100%';
   hideMe = false;
+  loading: Loading;
   currentUser: any;
   private list:[any] ;
   public searchText: string = '';
@@ -38,6 +42,7 @@ export class CommandValidationPage {
     enableHighAccuracy: true,
     timeout: 5000,
        }
+  isFabMiddle: Boolean =false;
   @ViewChild(HereMapComponent) map: HereMapComponent;
   
   constructor(private storage: Storage,
@@ -47,7 +52,8 @@ export class CommandValidationPage {
       public alertCtrl: AlertController, 
       public commandProvider: CommandProvider,
       public adressesProvider: AddressesProvider,
-    private modalController: ModalController,) {
+    private modalController: ModalController,
+    private loadingCtrl: LoadingController) {
   }
 
   ionViewWillEnter() {
@@ -55,6 +61,7 @@ export class CommandValidationPage {
         if (!_currentCommand || !_currentCommand.length) return this.navCtrl.pop();
         this.currentCommandPrice = this.commandProvider.calculCommandPrice(_currentCommand);
       });
+    
     
   }
 
@@ -97,10 +104,19 @@ export class CommandValidationPage {
     fab.close();
     this.map.addMrkerOnClick();
   }
-  selectAddress(_address){
+  selectAddress(_address,fabSearch=null){
+    
+    if (fabSearch!=null)
+      fabSearch.close();
     console.log(_address);
     this.currentAddress = _address;
+    
+    this.cardHeight = this.cardViewRef.nativeElement.offsetHeight;
+    console.log(this.cardHeight);
     this.map.setMarkerCenter(_address.lat,_address.lng);
+    this.map.moveMapOnY(this.cardHeight/2);
+    
+    this.isFabMiddle = true;
   }
   
   removeFocus() {
@@ -143,9 +159,17 @@ export class CommandValidationPage {
         {
           text: 'Save',
           handler: data => {
-            this.adressesProvider.addUserAddress(data.description,this.map.lat,this.map.lng,"paris").then(user =>{
+            this.showLoading();
+            this.adressesProvider.addUserAddress(data.description,this.map.lat,this.map.lng,this.map.city).then(user =>{
               console.log(user);
-              this.mapHeight = '50%';
+              console.log(this.currentUser);
+              this.storage.get('user').then((_currentUser) => {
+                this.currentUser = _currentUser
+                this.list = this.currentUser.address.address;
+                this.selectAddress(this.list[this.list.length-1]);
+              })
+              
+              this.loading.dismiss();
             });
             console.log('Saved clicked'+data.description);
           }
@@ -168,5 +192,11 @@ export class CommandValidationPage {
     this.modalController.create('CurrentCommandDetailsPage', { 'data': data }, { cssClass: 'inset-modal' })
       .present();
   }
-
+  showLoading() {
+    this.loading = this.loadingCtrl.create({
+      content: 'Enregistrement en cours ...',
+      dismissOnPageChange: true
+    });
+    this.loading.present();
+  }
 }

@@ -24,12 +24,14 @@ export class HereMapComponent implements OnInit {
   public lng: any;
   @Input()
   public height: any;
+  @Input()
+  public width: any;
   self = this;
   map=null;
   currentMarker = null;
   platform;
-  defaultAddressDescription=null;
-
+  defaultAddressDescription : string=null;
+  city: string = null;
 
 
   public constructor() { }
@@ -64,8 +66,38 @@ export class HereMapComponent implements OnInit {
     this.map.setZoom(12);
     console.log(this.lat + "," + this.lng);
     console.log(lat)
+    
   }
-  
+
+  moveMapOnY(offsetY) {
+    var viewPort,
+      move,
+      incY = -2,
+      y = offsetY;
+
+    // Obtain the view port object of the map to manipulate its screen coordinates
+     viewPort = this.map.getViewPort(),
+    // function calculates new screen coordinates and calls
+    // viewport's interaction method with them
+      move = function () {
+
+       y = y + incY;
+
+        if ( y<0) {
+          return;
+          
+        }
+        console.log(y);
+        
+        viewPort.interaction(100, y);
+      };
+
+    // set interaction modifier that provides information which map properties
+    // change with each "interact" call
+    viewPort.startInteraction(H.map.render.RenderEngine.InteractionModifiers.COORD);
+    // set up simple animation loop
+    setInterval(move, 15);
+  }
   addMrkerOnClick() {
   // Attach an event listener to map display
   // obtain the coordinates and display in an alert box.
@@ -116,7 +148,7 @@ export class HereMapComponent implements OnInit {
         lng: location.displayPosition.longitude
       };
   this.defaultAddressDescription = address.label
-  
+  this.city = address.city;
   // ... etc.
 }
 
@@ -127,5 +159,6 @@ export class HereMapComponent implements OnInit {
 onError(error) {
   console.log("Ooops! " + error);
 }
+
 
 }
