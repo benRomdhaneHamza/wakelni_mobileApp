@@ -65,10 +65,17 @@ export class CommandListPage {
 			this.commandsHistory = _commands;
 			 //this.groupedHistory = this.commandsHistory;
 
-			this.groupedHistory=this.groupByState(this.commandsHistory);
+			//console.log(result);
+			if(this.groupedHistory.length!=0){
+				this.groupedHistory = this.groupByState(this.commandsHistory);
+
+				this.groupedHistory[0].open = true;
+				this.filtredList = this.groupedHistory;
+				console.log(this.groupedHistory);
+			}
 			
-			this.groupedHistory[0].open=true;
-			this.filtredList = this.groupedHistory;			
+			
+			
 		})
 	}
 
@@ -85,18 +92,10 @@ export class CommandListPage {
 			.filter(e => arr[e]).map(e => arr[e]);
 		return unique;
 	}
-	async OpenCommandValidation() {
+	OpenCommandValidation() {
 		// lets open home-page wich is meals page 
-		// this.navCtrl.push('CommandValidationPage');
+		this.navCtrl.push('CommandValidationPage');
 		// this.nav.push('HomePage' , { 'space': this.space });
-
-		this.showLoading()
-		const command = await this.storage.get('currentCommand');
-		const commandIds = command.map(_obj => _obj._id);
-		const spaceId = command[0].space;
-		await this.commandProvider.passCommand(spaceId, commandIds, '');
-		this.commandProvider.clearCurrentCommand();
-		this.navCtrl.setRoot('SpacesPage');
 	}
 
 	async openModal() {

@@ -15,8 +15,8 @@ export class AccountPage {
 	userInfo = {
 		firstname : '',
 		lastname:'',
-		address:'',
 		email :'',
+		address:[],
 		// address can be changed to model where it contains langitude and lattitude
 	}
 	constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -32,6 +32,8 @@ export class AccountPage {
 		window.location.reload();
 	}
 	async saveModiciation() {
+		console.log(this.currentUser)
+		this.currentUser.user.address = this.userInfo.address
 		this.currentUser.user.firstname = this.userInfo.firstname
 		this.currentUser.user.lastname = this.userInfo.lastname
 		this.currentUser.user.address = this.userInfo.address
@@ -46,6 +48,7 @@ export class AccountPage {
 	ionViewWillEnter() {
 		this.storage.get('user').then((_currentUser) => {
 			this.currentUser = _currentUser;
+			this.userInfo.address = _currentUser.user.address
 			this.userInfo.firstname = _currentUser.user.firstname;
 			this.userInfo.lastname = _currentUser.user.lastname;
 			this.userInfo.address = _currentUser.user.address;
