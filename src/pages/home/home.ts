@@ -31,7 +31,7 @@ export class HomePage {
 	}
 
 	getMeals() {
-		this.mealsProvider.getMealsBySpace("5c97663c7e51e61fa87f7de7").then(_meals => {
+		this.mealsProvider.getMealsBySpace(this.space._id).then(_meals => {
 			this.meals = _meals;
 		}).catch(_err => console.error(_err));
 	}
