@@ -32,7 +32,7 @@ export class CurrentCommandDetailsPage {
 		const command = await this.storage.get('currentCommand');
 		const commandIds = command.map(_obj => _obj._id);
 		const spaceId = command[0].space;
-		await this.commandProvider.passCommand(spaceId, commandIds, this.commandDetails.description);
+		await this.commandProvider.passCommand(spaceId, commandIds, this.commandDetails.description,this.commandDetails.address);
 		this.commandProvider.clearCurrentCommand();
 		this.navCtrl.push('TabsPage');
 	}

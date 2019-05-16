@@ -30,6 +30,7 @@ export class CommandProvider {
 			return resolve(true)
 		});
 	}
+	
 	removeMealFromCommand(_meal) {
 		return new Promise((resolve, reject) => {
 			const index = this.currentCommand.findIndex(element => element._id === _meal._id);
@@ -45,11 +46,12 @@ export class CommandProvider {
 		});
 		return total;
 	};
-	passCommand(_space, _meals, _description) {
+	passCommand(_space, _meals, _description,_address) {
 		const data = {
 			space: _space,
 			meals: _meals,
-			description: _description
+			description: _description,
+			address: _address
 		}
 		return new Promise((resolve, reject) => {
 			const headers = {
