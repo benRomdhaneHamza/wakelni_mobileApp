@@ -16,8 +16,4 @@ export class MealDetailsPage {
     this.meal = navParams.get('meal');
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MealDetailsPage');
-  }
-
 }

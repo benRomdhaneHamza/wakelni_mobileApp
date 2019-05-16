@@ -32,7 +32,6 @@ export class AccountPage {
 		window.location.reload();
 	}
 	async saveModiciation() {
-		console.log(this.currentUser)
 		this.currentUser.user.firstname = this.userInfo.firstname
 		this.currentUser.user.lastname = this.userInfo.lastname
 		this.currentUser.user.address = this.userInfo.address
@@ -51,7 +50,6 @@ export class AccountPage {
 			this.userInfo.lastname = _currentUser.user.lastname;
 			this.userInfo.address = _currentUser.user.address;
 			this.userInfo.email = _currentUser.user.email;
-			console.log(this.currentUser);
 		})
 	}
 }
