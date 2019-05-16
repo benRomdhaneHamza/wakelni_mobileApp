@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, IonicPage ,NavParams, Events } from 'ionic-angular';
+import { NavController, IonicPage ,NavParams, Events, Tabs, App } from 'ionic-angular';
 import { MealsProvider } from '../../providers/meals/meals';
 import { Storage } from '@ionic/storage';
 
@@ -18,14 +18,15 @@ export class HomePage {
 		private mealsProvider: MealsProvider,
 		public events: Events,
 		private nav: NavController,
-		private navParams: NavParams) {
+		private navParams: NavParams,
+		private app: App) {
 		this.storage.get('user').then((_currentUser) => {
 			if (!_currentUser) return this.nav.setRoot('LoginPage');
 			this.space = this.navParams.get('space');
 			
-			console.log('space', this.space);
 			this.currentUser = _currentUser;
 			this.loadMeals = true;
+			this.getMeals();
 		});		
 	}
 
@@ -37,7 +38,6 @@ export class HomePage {
 
 	ionViewWillEnter() {
 		
-		if (this.loadMeals) this.getMeals();
 		this.storage.get('currentCommand').then(_currentCommand => {
 			this.currentCommand = _currentCommand;
 		});
@@ -49,6 +49,6 @@ export class HomePage {
 	}
 
 	goToCurrentCommand() {
-		this.nav.push('CurrentCommandPage');
+		this.nav.parent.select(1);
 	}
 }

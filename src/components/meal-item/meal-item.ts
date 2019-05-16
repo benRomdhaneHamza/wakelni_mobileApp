@@ -43,7 +43,6 @@ export class MealItemComponent {
 	}
 
 	async doSomething(){
-		console.log(this.meal.name + " clicked");
 		this.nav.push('MealDetailsPage' , { 'meal': this.meal });
 	}
 }
