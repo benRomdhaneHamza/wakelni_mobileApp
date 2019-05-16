@@ -53,7 +53,6 @@ export class AccountPage {
 			this.userInfo.lastname = _currentUser.user.lastname;
 			this.userInfo.address = _currentUser.user.address;
 			this.userInfo.email = _currentUser.user.email;
-			console.log(this.currentUser);
 		})
 	}
 }

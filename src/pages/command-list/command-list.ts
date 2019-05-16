@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Slides, Events, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, Slides, Events, Content, Loading, LoadingController } from 'ionic-angular';
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
 import { CommandProvider } from "../../providers/command/command";
@@ -25,6 +25,7 @@ export class CommandListPage {
 	filtredList=[];
 	queryText: any = "";
 	segmentChoice = 'currentCommandChoice';
+	loading: Loading;
 
 	constructor(public navCtrl: NavController,
 		public events: Events,
@@ -32,14 +33,18 @@ export class CommandListPage {
 		private storage: Storage,
 		private modalController: ModalController,
 		private mealsProvider: MealsProvider,
-		private commandProvider: CommandProvider
+		private commandProvider: CommandProvider,
+		private loadingCtrl: LoadingController
 		) {		
 	}
 
 	ionViewWillEnter() {
 		this.events.subscribe('updatedCommand', (data) => {
 			this.storage.get('currentCommand').then(async (_currentCommand) => {
-				if (!_currentCommand || !_currentCommand.length) return null;
+				if (!_currentCommand || !_currentCommand.length) {
+					this.currentCommandPrice = 0;
+					return null;
+				}
 				this.currentCommandPrice = await this.commandProvider.calculCommandPrice(_currentCommand);
 			});
 		});
@@ -59,7 +64,6 @@ export class CommandListPage {
 		this.commandProvider.getUserCommands().then(_commands => {
 			this.commandsHistory = _commands;
 			 //this.groupedHistory = this.commandsHistory;
-			 console.log(this.commandsHistory);
 
 			//console.log(result);
 			if(this.groupedHistory.length!=0){
@@ -136,7 +140,6 @@ export class CommandListPage {
 				 });
 			 };
 		 }(Object.create(null)));
-		 console.log(list);
 		 
 		 return list;
 	}
@@ -157,6 +160,14 @@ export class CommandListPage {
 	}
 	segmentClick(){
 		this.content.resize();
+	}
+
+	showLoading() {
+		this.loading = this.loadingCtrl.create({
+			content: 'Envoi de la commande ...',
+			dismissOnPageChange: true
+		});
+		this.loading.present();
 	}
 
 
