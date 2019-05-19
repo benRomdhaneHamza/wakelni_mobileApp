@@ -44,6 +44,10 @@ export class AccountPage {
 			window.location.reload();
 		}
 	}
+
+	formatAddress(_address) {
+		return _address.map(a => a.city);
+	}
 			
 	ionViewWillEnter() {
 		this.storage.get('user').then((_currentUser) => {
