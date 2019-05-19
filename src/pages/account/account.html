@@ -21,10 +21,8 @@
       <ion-label floating>Email</ion-label>
       <ion-input id="email" type="text" [(ngModel)]="userInfo.email" [ngModelOptions]="{standalone: true}"></ion-input>
     </ion-item>
-    <ion-item style="margin:16px 0px">
-      <ion-label floating>Adress</ion-label>
-      <ion-input id="adress" type="text" [(ngModel)]="userInfo.address" [ngModelOptions]="{standalone: true}"></ion-input>
-    </ion-item>
+
+		<p>{{ formatAddress(userInfo.address) }}</p>
     <button ion-button block (click)="saveModiciation()">Enregistrer</button>
   </form>
   <button ion-button block (click)="logout()">Se déconnecter</button>
