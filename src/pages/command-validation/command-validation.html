@@ -6,38 +6,38 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Choisissez votre position</ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-title>Choisissez votre position</ion-title>
+	</ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding  class="no-scroll" >
-  
-    <ion-fab right top #fabSearch>
-      <button ion-fab mini class="fab-search">
-        <ion-icon name="star" ></ion-icon>
-      </button>
-    
-    
-    
-      <ion-fab-list style="margin-left:20%;left:-80vw;" side="left">
-        <div class="autocomplete"
-          style="width:100%;height: 100 px;position:absolute;z-index:100;">
-        <ion-searchbar style="width:100%;" [(ngModel)]="searchText" (ionFocus)="addFocus()" (ionInput)="search()"
-          (ionBlur)="removeFocus()" debounce=500></ion-searchbar>
-              <ion-list no-lines no-padding *ngIf="hideMe">
-                <ion-item *ngFor="let res of countries">
-                  <ion-row (tap)="selectAddress(res,fabSearch)">{{res.description}}</ion-row>
-                </ion-item>
-              </ion-list>
-              </div>
-      </ion-fab-list>
-    </ion-fab>
+<ion-content padding class="no-scroll">
 
-    
-    <!--<ion-scroll style="width:100%;height:140px;" scrollY="true">
+	<ion-badge *ngIf="!positionChosen" color="secondary" id="searchBadge" item-end>Rechercher une addresse</ion-badge>
+	<ion-fab *ngIf="!positionChosen" right top #fabSearch>
+		<button ion-fab mini class="fab-search">
+			<ion-icon name="star"></ion-icon>
+		</button>
+
+
+
+		<ion-fab-list style="margin-left:20%;left:-80vw;" side="left">
+			<div class="autocomplete" style="width:100%;height: 100 px;position:absolute;z-index:100;">
+				<ion-searchbar style="width:100%;" [(ngModel)]="searchText" (ionFocus)="addFocus()" (ionInput)="search()" (ionBlur)="removeFocus()"
+				 debounce=500></ion-searchbar>
+				<ion-list no-lines no-padding *ngIf="hideMe">
+					<ion-item *ngFor="let res of countries">
+						<ion-row (tap)="selectAddress(res,fabSearch)">{{res.description}}</ion-row>
+					</ion-item>
+				</ion-list>
+			</div>
+		</ion-fab-list>
+	</ion-fab>
+
+
+	<!--<ion-scroll style="width:100%;height:140px;" scrollY="true">
     <ion-list style="max-height:140px !important;" no-lines>
       <ion-item >
          item 
@@ -45,51 +45,61 @@
       
     </ion-list>
     </ion-scroll>-->
-  
-  
-  <here-map appId="S5Zz67ekDmTFL5dlwV8w" appCode="c40NYxrFjGSy62UOsPUScQ" lat="{{lat}}" lng="{{lng}}" height="{{mapHeight}}" width="{{mapWidth}}"></here-map>
-  <ion-card [style.bottom]="currentAddress !=null ? '0' : '-600px'" style="position:absolute;width:94%; margin-left: 3%; border-radius:5px;height: 48%; " #preValidationInformation >  
-    <ion-card-content style="height:100%;background:#f25e68;">
-      <div style="height:30%;padding:0% 4%;width:100%;margin-bottom:0.5vh; " > <p style="color:gold;"> Addresse de Livraison: </p>
-       <p style="color: white; word-wrap:break-word;"> {{currentAddress !=null ? currentAddress.description : '' }}</p>
-      </div>
-      <hr style="color:white"/>
-      <div style=" padding:0% 4%;">
-      <ion-label stacked><p  style="color:gold;">Description</p></ion-label>
-      <ion-textarea style="border: 1px solid rgba(27, 27, 27, 0);border-radius: 5px;background-color: whitesmoke" [(ngModel)]="description"></ion-textarea>
-      <hr style="color:white" />
-      <button *ngIf="currentAddress!= null"
-        style=" width:9em;margin-right:0% !important; margin-left: auto !important;display:block;"
-        ion-button color="secondary" round item-end (click)="openModal()">
-          <span style="display: table-row;vertical-align: middle;">Commander</span>
-      </button>
-      </div>
-    </ion-card-content>
-  
-  </ion-card>
-  
-    
-  
-  
-  <ion-fab  right [attr.middle]="isFabMiddle ? true : null" [attr.bottom]="!isFabMiddle ? true : null" #fab>
-    <button mini ion-fab class="fab-address">
-        <ion-icon name="md-options"></ion-icon>
-    </button>
-    
-      
-    
-    <ion-fab-list side="top">
-      <button ion-fab class="fab-address-element" (click)="autoLocate(fab)">
-        <ion-icon name="md-locate"></ion-icon>
-      </button>
-      <button ion-fab class="fab-address-element" (click)="manuallyLocate(fab)">
-        <ion-icon name="md-flag"></ion-icon>
-      </button>
-      <button ion-fab *ngIf="map.currentMarker!=null" class="fab-address-element" (click)="showPrompt(fab)">
-        <ion-icon name="md-bookmarks"></ion-icon>
-      </button>
-    </ion-fab-list>
-  </ion-fab>
-    
-  
+
+
+	<here-map appId="S5Zz67ekDmTFL5dlwV8w" appCode="c40NYxrFjGSy62UOsPUScQ" lat="{{lat}}" lng="{{lng}}" height="{{mapHeight}}"
+	 width="{{mapWidth}}"></here-map>
+	<ion-card [style.bottom]="currentAddress !=null ? '0' : '-600px'" style="position:absolute;width:94%; margin-left: 3%; border-radius:5px;height: 48%; "
+	 #preValidationInformation>
+		<ion-card-content style="height:100%;background:#f25e68;">
+			<div style="height:30%;padding:0% 4%;width:100%;margin-bottom:0.5vh; ">
+				<p style="color:gold;"> Addresse de Livraison: </p>
+				<p style="color: white; word-wrap:break-word;"> {{currentAddress !=null ? currentAddress.description : '' }}</p>
+			</div>
+			<hr style="color:white" />
+			<div style=" padding:0% 4%;">
+				<ion-label stacked>
+					<p style="color:gold;">Description</p>
+				</ion-label>
+				<ion-textarea style="border: 1px solid rgba(27, 27, 27, 0);border-radius: 5px;background-color: whitesmoke"
+				 [(ngModel)]="description"></ion-textarea>
+				<hr style="color:white" />
+				<button *ngIf="currentAddress!= null" style=" width:9em;margin-right:0% !important; margin-left: auto !important;display:block;"
+				 ion-button color="secondary" round item-end (click)="openModal()">
+					<span style="display: table-row;vertical-align: middle;">Commander</span>
+				</button>
+			</div>
+		</ion-card-content>
+
+	</ion-card>
+
+
+
+
+	<ion-fab *ngIf="!positionChosen" right [attr.middle]="isFabMiddle ? true : null" [attr.bottom]="!isFabMiddle ? true : null" #fab>
+			
+		<button mini ion-fab class="fab-address">
+			<ion-icon name="md-options"></ion-icon>
+		</button>
+		<ion-badge style="top: 20px;" color="secondary" id="gestionBadge" item-end>Gérer ma postion</ion-badge>
+
+
+
+		<ion-fab-list side="top">
+			<button ion-fab class="fab-address-element" (click)="autoLocate(fab)">
+				<ion-icon name="md-locate"></ion-icon>
+			</button>
+			<ion-badge style="top: 20px;" color="secondary" id="gestionBadge" item-end>Ajouter cette adresse</ion-badge>
+			<button ion-fab class="fab-address-element" (click)="manuallyLocate(fab)">
+				<ion-icon name="md-flag"></ion-icon>
+			</button>
+			<ion-badge style="top: 75px;" color="secondary" id="gestionBadge" item-end>Choisir une positon</ion-badge>
+			<button ion-fab *ngIf="map.currentMarker!=null" class="fab-address-element" (click)="showPrompt(fab)">
+				<ion-icon name="md-bookmarks"></ion-icon>
+			</button>
+			<ion-badge style="top: 135px;" color="secondary" id="gestionBadge" item-end>Localisation automatique</ion-badge>
+		</ion-fab-list>
+	</ion-fab>
+
+
 </ion-content>

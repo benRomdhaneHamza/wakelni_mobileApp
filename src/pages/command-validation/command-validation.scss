@@ -1,6 +1,19 @@
 page-command-validation {
 
 }
+#searchBadge {
+	position: absolute;
+	font-size: 1.5rem;
+    top: 30px;
+    z-index: 1;
+    right: 80px;
+}
+#gestionBadge {
+	position: absolute;
+	font-size: 1.5rem;
+    z-index: 1;
+    right: 60px;
+}
 .no-scroll {
   .scroll-content{
     overflow: hidden !important;

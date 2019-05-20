@@ -31,6 +31,7 @@ export class CommandValidationPage {
 	hideMe = false;
 	loading: Loading;
 	currentUser: any;
+	positionChosen = false;
 	private list: [any];
 	public searchText: string = '';
 	public countries: string[] = [];
@@ -81,7 +82,6 @@ export class CommandValidationPage {
 		if (fab) fab.close();
 		this.message = "NO"
 		this.geolocation.getCurrentPosition().then((resp) => {
-			console.log('*-*-*-*-*-*-*-*', resp);
 			this.lat = resp.coords.latitude;
 			this.lng = resp.coords.longitude;
 			this.message = "YES 1"
@@ -105,7 +105,6 @@ export class CommandValidationPage {
 	manuallyLocate(fab) {
 		fab.close();
 		this.map.addMrkerOnClick();
-		console.log('manuallyLocate', this.map);
 	}
 	selectAddress(_address, fabSearch = null) {
 
@@ -132,15 +131,15 @@ export class CommandValidationPage {
 			return;
 		}
 		this.countries = this.list.filter(item => {
-			return (item.city.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1) ||
-				(item.description.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1);
+			return ((item.city && item.city.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1)) ||
+				((item.description && item.description.toLowerCase().indexOf(this.searchText.toLowerCase()) > -1));
 		});
 		//item.description.toUpperCase().includes(this.searchText.toUpperCase()));
 	}
 	showPrompt(fab) {
 		fab.close();
 		const prompt = this.alertCtrl.create({
-			title: "Enregistrer l'addresse",
+			title: "Voulez vous enregistrer cette addresse ?",
 			message: "Donner un nom a cette adresse",
 			inputs: [
 				{
@@ -153,6 +152,18 @@ export class CommandValidationPage {
 				{
 					text: 'Annuler',
 				},
+				// {
+				// 	text: 'Non',
+				// 	handler: data => {
+				// 		const address = {
+				// 			description: data.description,
+				// 			lat: this.map.lat,
+				// 			lng: this.map.lng,
+				// 			city: this.map.city
+				// 		}
+				// 		this.selectAddress(address);
+				// 	}
+				// },
 				{
 					text: 'Enregistrer',
 					handler: data => {
@@ -161,13 +172,12 @@ export class CommandValidationPage {
 							this.storage.get('user').then((_currentUser) => {
 								this.currentUser = _currentUser.user;
 								this.list = this.currentUser.address;
-								console.log('*-*-*-*-*-*', this.list[this.list.length - 1]);
 								this.selectAddress(this.list[this.list.length - 1]);
+								this.positionChosen = true;
 							})
 
 							this.loading.dismiss();
 						});
-						console.log('Saved clicked' + data.description);
 					}
 				}
 			]

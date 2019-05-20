@@ -32,17 +32,12 @@ export class AccountPage {
 		window.location.reload();
 	}
 	async saveModiciation() {
-		console.log(this.currentUser)
 		this.currentUser.user.address = this.userInfo.address
 		this.currentUser.user.firstname = this.userInfo.firstname
 		this.currentUser.user.lastname = this.userInfo.lastname
 		this.currentUser.user.address = this.userInfo.address
 		this.currentUser.user.email = this.userInfo.email
-		await this.storage.set('user', this.currentUser);
 		let user = await this.userProvider.updateUser();
-		if (user){
-			window.location.reload();
-		}
 	}
 
 	formatAddress(_address) {
@@ -51,12 +46,9 @@ export class AccountPage {
 			
 	ionViewWillEnter() {
 		this.storage.get('user').then((_currentUser) => {
-			this.currentUser = _currentUser;
-			this.userInfo.address = _currentUser.user.address
-			this.userInfo.firstname = _currentUser.user.firstname;
-			this.userInfo.lastname = _currentUser.user.lastname;
-			this.userInfo.address = _currentUser.user.address;
-			this.userInfo.email = _currentUser.user.email;
+			this.currentUser = _currentUser.user;
+			this.userInfo = this.currentUser;
+			console.log('this.userInfo', this.userInfo);
 		})
 	}
 }

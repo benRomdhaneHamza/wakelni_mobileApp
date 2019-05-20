@@ -1,13 +1,72 @@
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Parametre du compte</ion-title>
-  </ion-navbar>
+	<ion-navbar>
+		<ion-title>Parametre du compte</ion-title>
+	</ion-navbar>
 
 </ion-header>
 
+<ion-content>
 
-<ion-content padding class="globalBackground">
+
+	<ion-list no-border>
+		<ion-list-header style="font-size: 1.6em;">
+			<ion-icon name='settings' item-start></ion-icon>
+			Paramétres Generaux
+		</ion-list-header>
+		<ion-item>
+			<ion-label>Nom</ion-label>
+			<ion-input [(ngModel)]="userInfo.firstname" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label>Prenom</ion-label>
+			<ion-input [(ngModel)]="userInfo.lastname" type="text"></ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-label>Numero de telephone</ion-label>
+			<ion-input [(ngModel)]="userInfo.phone" type="text"></ion-input>
+		</ion-item>
+		<button ion-button class="login-button">Valider</button>
+	</ion-list>
+	<br><br><br>
+
+
+	<ion-list>
+		<ion-list-header style="font-size: 1.6em;">
+			<ion-icon name='ios-map-outline' item-start></ion-icon>
+			<span>Vos addresse</span>
+		</ion-list-header>
+
+		<ion-scroll scrollY="true" style="height: 200px">
+			<ion-list>
+				<ion-item *ngFor="let address of userInfo.address">
+					{{ address.description }}
+					<ion-icon name="ios-close-outline" item-end></ion-icon>
+				</ion-item>
+			</ion-list>
+		</ion-scroll>
+
+	</ion-list>
+
+	<br><br><br>
+
+
+
+	<ion-list>
+		<ion-list-header style="font-size: 1.6em;">
+			Sécurité
+		</ion-list-header>
+		<ion-item>
+			<ion-icon name='power' item-start></ion-icon>
+			<button (click)="logout()" ion-button item-end>
+				Se déconnecter
+			</button>
+		</ion-item>
+	</ion-list>
+</ion-content>
+
+
+<!-- <ion-content padding class="globalBackground">
   <form name="profileEdit" class="form-signin" ng-submit="userCtrl.saveProfile()">
     <ion-item style="margin:16px 0px">
       <ion-label floating>First Name</ion-label>
@@ -26,4 +85,4 @@
     <button ion-button block (click)="saveModiciation()">Enregistrer</button>
   </form>
   <button ion-button block (click)="logout()">Se déconnecter</button>
-</ion-content>
+</ion-content> -->

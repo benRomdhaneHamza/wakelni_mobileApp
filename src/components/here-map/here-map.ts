@@ -56,7 +56,6 @@ export class HereMapComponent implements OnInit {
     let behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(this.map));
   }
   setMarkerCenter(lat,lng){
-    console.log(lat + "," +lng );
     this.lat = lat;
     this.lng = lng;
     this.map.setCenter({lat,lng});
@@ -64,8 +63,6 @@ export class HereMapComponent implements OnInit {
     this.currentMarker = new H.map.Marker({ lat: lat, lng: lng });
     this.map.addObject(this.currentMarker);
     this.map.setZoom(12);
-    console.log(this.lat + "," + this.lng);
-    console.log(lat)
     
   }
 
@@ -87,7 +84,6 @@ export class HereMapComponent implements OnInit {
           return;
           
         }
-        console.log(y);
         
         viewPort.interaction(100, y);
       };
@@ -101,18 +97,15 @@ export class HereMapComponent implements OnInit {
   addMrkerOnClick() {
   // Attach an event listener to map display
   // obtain the coordinates and display in an alert box.
-  console.log(this.map);
   
     this.map.addEventListener("tap", this.addMarker, false,this);
 }
   addMarker(evt) {
-    console.log(this.map);
     var coord = this.map.screenToGeo(
       evt.currentPointer.viewportX,
       evt.currentPointer.viewportY
     );
     var loc = coord.lat + "," + coord.lng ;
-    console.log(loc);
     this.lat = coord.lat;
     this.lng = coord.lng;
     this.map.removeObjects(this.map.getObjects())

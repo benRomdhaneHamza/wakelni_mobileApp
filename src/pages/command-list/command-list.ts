@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams, ModalController, Slides, Events, C
 import { Storage } from '@ionic/storage';
 import { MealsProvider } from "../../providers/meals/meals";
 import { CommandProvider } from "../../providers/command/command";
-
+import { Geolocation } from '@ionic-native/geolocation';
+import { AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -17,25 +18,27 @@ export class CommandListPage {
 
 	commandValidationRoot = "CommandValidationPage"
 
-	filterVisible=false;
+	filterVisible = false;
 	currentCommand = [];
 	currentCommandPrice = null;
 	commandsHistory = null;
-	groupedHistory=[];
-	filtredList=[];
+	groupedHistory = [];
+	filtredList = [];
 	queryText: any = "";
 	segmentChoice = 'currentCommandChoice';
 	loading: Loading;
 
 	constructor(public navCtrl: NavController,
+		public alertCtrl: AlertController,
 		public events: Events,
 		public navParams: NavParams,
 		private storage: Storage,
 		private modalController: ModalController,
 		private mealsProvider: MealsProvider,
 		private commandProvider: CommandProvider,
-		private loadingCtrl: LoadingController
-		) {		
+		private loadingCtrl: LoadingController,
+		private geolocation: Geolocation
+	) {
 	}
 
 	ionViewWillEnter() {
@@ -63,19 +66,19 @@ export class CommandListPage {
 		// LOAD HISTORY
 		this.commandProvider.getUserCommands().then(_commands => {
 			this.commandsHistory = _commands;
-			 //this.groupedHistory = this.commandsHistory;
+			//this.groupedHistory = this.commandsHistory;
 
 			//console.log(result);
-			if(this.groupedHistory.length!=0){
+			if (this.groupedHistory.length != 0) {
 				this.groupedHistory = this.groupByState(this.commandsHistory);
 
 				this.groupedHistory[0].open = true;
 				this.filtredList = this.groupedHistory;
 				console.log(this.groupedHistory);
 			}
-			
-			
-			
+
+
+
 		})
 	}
 
@@ -93,9 +96,11 @@ export class CommandListPage {
 		return unique;
 	}
 	OpenCommandValidation() {
-		// lets open home-page wich is meals page 
-		this.navCtrl.push('CommandValidationPage');
-		// this.nav.push('HomePage' , { 'space': this.space });
+		this.geolocation.getCurrentPosition().then(_pos => {
+			if (_pos) return this.navCtrl.push('CommandValidationPage');
+		}).catch(_err => {
+			this.showGpsAlert();
+		});
 	}
 
 	async openModal() {
@@ -112,53 +117,53 @@ export class CommandListPage {
 	}
 
 	formatDate(_date) {
-		const date =  new Date(_date);
+		const date = new Date(_date);
 		return date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear();
 	}
 
 	filterCommands(_array, _value) {
 		return _array.filter(x => x.state == _value);
 	}
-	toggleHistoryGroup(i){
-		this.filtredList[i].open=!this.filtredList[i].open;
+	toggleHistoryGroup(i) {
+		this.filtredList[i].open = !this.filtredList[i].open;
 	}
 	groupByState(listToGroup) {
-		 var list = [];
+		var list = [];
 		listToGroup.forEach(function (hash) {
-			 return function (a) {
-				 if (!hash[a.state]) {
-					 hash[a.state] = { state: a.state, commands: [] };
-					 list.push(hash[a.state]);
-				 }
-				 hash[a.state].commands.push({
-					 description: a.description,
-					 mealList: a.mealList,
-					 price: a.price,
-					 user: a.user,
-					 space: a.space,
-					 createdAt: a.createdAt
-				 });
-			 };
-		 }(Object.create(null)));
-		 
-		 return list;
+			return function (a) {
+				if (!hash[a.state]) {
+					hash[a.state] = { state: a.state, commands: [] };
+					list.push(hash[a.state]);
+				}
+				hash[a.state].commands.push({
+					description: a.description,
+					mealList: a.mealList,
+					price: a.price,
+					user: a.user,
+					space: a.space,
+					createdAt: a.createdAt
+				});
+			};
+		}(Object.create(null)));
+
+		return list;
 	}
 	filterListCommand() {
-		this.groupedHistory=this.commandsHistory;
-		this.groupedHistory= this.groupedHistory.filter(item => {
-			return (item.state.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
-				(item.description.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
-				(item.space.name.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
-				(item.space.description.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1)||
+		this.groupedHistory = this.commandsHistory;
+		this.groupedHistory = this.groupedHistory.filter(item => {
+			return (item.state.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1) ||
+				(item.description.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1) ||
+				(item.space.name.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1) ||
+				(item.space.description.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1) ||
 				(item.space.city.toLowerCase().indexOf(this.queryText.toLowerCase()) > -1);
 		});
-		this.filtredList=this.groupByState(this.groupedHistory);
+		this.filtredList = this.groupByState(this.groupedHistory);
 
 	}
 	showFilter() {
-		this.filterVisible=!this.filterVisible;	
+		this.filterVisible = !this.filterVisible;
 	}
-	segmentClick(){
+	segmentClick() {
 		this.content.resize();
 	}
 
@@ -170,5 +175,13 @@ export class CommandListPage {
 		this.loading.present();
 	}
 
-
+	showGpsAlert() {
+		const alert = this.alertCtrl.create({
+			title: 'Activez votre gps',
+			subTitle: 'Veuillez activer votre gps pour valider votre commande',
+			buttons: ['OK']
+		});
+		alert.present();
+	}
 }
+
