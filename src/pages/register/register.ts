@@ -15,7 +15,7 @@ export class RegisterPage {
 		firstname: null,
 		email: null,
 		password: null,
-		adress: null
+		phone: null
 	};
 
 	constructor(private nav: NavController,
