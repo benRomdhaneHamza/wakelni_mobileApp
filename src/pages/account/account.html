@@ -6,7 +6,7 @@
 
 </ion-header>
 
-<ion-content>
+<ion-content class="globalBackground">
 
 
 	<ion-list no-border>
@@ -24,11 +24,11 @@
 		</ion-item>
 		<ion-item>
 			<ion-label>Numero de telephone</ion-label>
-			<ion-input [(ngModel)]="userInfo.phone" type="text"></ion-input>
+			<ion-input [(ngModel)]="userInfo.phone" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></ion-input>
 		</ion-item>
-		<button ion-button class="login-button">Valider</button>
+		<button ion-button class="login-button" [disabled]="!disableUpdateGeneralBtn()">Valider</button>
 	</ion-list>
-	<br><br><br>
+	<br>
 
 
 	<ion-list>
@@ -56,6 +56,21 @@
 		<ion-list-header style="font-size: 1.6em;">
 			Sécurité
 		</ion-list-header>
+		<ion-item (tap)="changeEmailAlert($event)">
+			<ion-label style="margin-right: 10%; color: #39ACDC;">
+				<ion-icon md="ios-create"></ion-icon>
+			</ion-label>
+			<ion-label>Addresse mail</ion-label>
+			<ion-input [(value)]="userInfo.email" type="text" disabled></ion-input>
+		</ion-item>
+		<ion-item (tap)="changePasswordAlert($event)">
+			<ion-label style="margin-right: 10%; color: #39ACDC;">
+				<ion-icon md="ios-create"></ion-icon>
+			</ion-label>
+			<ion-label>Mot de passe</ion-label>
+			<ion-input value="**********" type="password" disabled></ion-input>
+		</ion-item>
+
 		<ion-item>
 			<ion-icon name='power' item-start></ion-icon>
 			<button (click)="logout()" ion-button item-end>
