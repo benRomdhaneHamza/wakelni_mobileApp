@@ -15,6 +15,7 @@ import { SpacesProvider } from '../providers/spaces/spaces';
 import { CommandProvider } from '../providers/command/command';
 
 import { Geolocation } from '@ionic-native/geolocation';
+import { Diagnostic } from '@ionic-native/diagnostic';
 
 import { UsersProvider } from '../providers/users/users';
 
@@ -58,6 +59,7 @@ const config = {
 	],
 	providers: [
 		Geolocation,
+		Diagnostic,
 		StatusBar,
 		SplashScreen,
 		{
