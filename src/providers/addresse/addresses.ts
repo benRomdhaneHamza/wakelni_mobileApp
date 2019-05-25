@@ -46,12 +46,39 @@ export class AddressesProvider {
 			this.http.post(this.apiUrl + "/user/",
 				data,
 				{ headers: headers }).subscribe(async _addresses => {
-					this.addAddressesToUser(_addresses)
+					await this.addAddressesToUser(_addresses);
 					return resolve(_addresses);
 				}, _err => {
 					return reject(_err);
 				})
 
+		});
+	}
+
+	async deleteAddress(_addressId) {
+		const currentUser = await this.storage.get('user');
+		return new Promise((resolve, reject) => {
+			const headers = {
+				'Content-Type': 'application/json',
+				'x-access-token': currentUser.token
+			}
+			this.http.delete(this.apiUrl + '/user/' + _addressId, { headers: headers })
+				.subscribe(async _deleted => {
+					await this.removeAddressFromLocalUser(_addressId);
+					return resolve(_deleted);
+				}, _err => {
+					return reject(_err);
+				})
+		});
+	}
+
+	async removeAddressFromLocalUser(_address) {
+		return new Promise(async (resolve, reject) => {
+			let currentUser = await this.storage.get('user');
+			const index = currentUser.user.address.findIndex(element => element._id == _address);
+			currentUser.user.address.splice(index, 1);
+			await this.storage.set('user', currentUser);
+			return resolve(true);
 		});
 	}
 }

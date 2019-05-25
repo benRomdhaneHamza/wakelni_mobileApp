@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angu
 import { Storage } from '@ionic/storage';
 import { AuthService } from "../../providers/auth-service/auth-service";
 import { UsersProvider } from "../../providers/users/users"
+import { AddressesProvider } from "../../providers/addresse/addresses"
 
 @IonicPage()
 @Component({
@@ -11,6 +12,7 @@ import { UsersProvider } from "../../providers/users/users"
 })
 export class AccountPage {
 
+	adressesScrollHeight: 0;
 	currentUser: any;
 	userInfo = {
 		firstname: '',
@@ -24,7 +26,8 @@ export class AccountPage {
 		private storage: Storage,
 		public alertCtrl: AlertController,
 		private authService: AuthService,
-		private userProvider: UsersProvider) {
+		private userProvider: UsersProvider,
+		private addressesProvider: AddressesProvider) {
 
 	}
 
@@ -32,14 +35,6 @@ export class AccountPage {
 		this.authService.logout();
 		this.navCtrl.setRoot('LoginPage');
 		window.location.reload();
-	}
-	async saveModiciation() {
-		this.currentUser.user.address = this.userInfo.address
-		this.currentUser.user.firstname = this.userInfo.firstname
-		this.currentUser.user.lastname = this.userInfo.lastname
-		this.currentUser.user.address = this.userInfo.address
-		this.currentUser.user.email = this.userInfo.email
-		let user = await this.userProvider.updateUser();
 	}
 
 	formatAddress(_address) {
@@ -50,7 +45,6 @@ export class AccountPage {
 		this.storage.get('user').then((_currentUser) => {
 			this.currentUser = _currentUser.user;
 			this.userInfo = this.currentUser;
-			console.log('this.userInfo', this.userInfo);
 		})
 	}
 
@@ -60,8 +54,24 @@ export class AccountPage {
 			this.userInfo.phone && this.userInfo.phone.trim() != '') return true;
 		return false;
 	}
-	updateGeneralInfo() {
-
+	async updateGeneralInfo() {
+		let data = {
+			firstname: this.userInfo.firstname,
+			lastname: this.userInfo.lastname,
+			phone: this.userInfo.phone
+		}
+		this.userProvider.updateUser(data).then(_res => {
+			this.storage.get('user').then((_currentUser) => {
+				this.currentUser = _currentUser.user;
+				this.userInfo = this.currentUser;
+			}).catch(_err => {
+				const alert = this.alertCtrl.create({
+					title: 'Une Erreur est survenue',
+					buttons: ['OK']
+				});
+				alert.present();
+			})
+		})
 	}
 
 	changeEmailAlert(e) {
@@ -91,6 +101,7 @@ export class AccountPage {
 					text: 'Valider',
 					handler: data => {
 						console.log('Saved clicked', data);
+						this.updateUserEmail(data.password, data.email);
 					}
 				}
 			]
@@ -124,10 +135,54 @@ export class AccountPage {
 					text: 'Valider',
 					handler: data => {
 						console.log('Saved clicked', data);
+						this.updateUserPassword(data.actualPassword, data.newPassword);
 					}
 				}
 			]
 		});
 		prompt.present();
+	}
+	deleteAddress(e, _addressId) {
+		this.addressesProvider.deleteAddress(_addressId).then(() => {
+			this.storage.get('user').then((_currentUser) => {
+				this.currentUser = _currentUser.user;
+				this.userInfo = this.currentUser;
+			})
+		}).catch(_err => {
+			console.log('____deleteAddress______', _err);
+			const alert = this.alertCtrl.create({
+				title: 'Une Erreur est survenue',
+				buttons: ['OK']
+			});
+			alert.present();
+		})
+	}
+	calculAddressesScrollHeight(_addresses) {
+		if (_addresses.length >= 4 ) return '200px';
+		else return (50 * _addresses.length) + 'px';
+	}
+	updateUserEmail(_password, _newEmail) {
+		this.userProvider.updateUserEmail(_password, _newEmail).then(_updated => {
+			return this.logout();
+		}).catch(_err => {
+			console.log('_errrrr_rrr', _err);
+			const alert = this.alertCtrl.create({
+				title: 'verifiez vos données',
+				buttons: ['OK']
+			});
+			alert.present();
+		})
+	}
+	updateUserPassword(_oldPassword, _newPassword) {
+		this.userProvider.updateUserPassword(_oldPassword, _newPassword).then(_updated => {
+			return this.logout();
+		}).catch(_err => {
+			console.log('_errrrr_rrr', _err);
+			const alert = this.alertCtrl.create({
+				title: 'verifiez vos données',
+				buttons: ['OK']
+			});
+			alert.present();
+		})
 	}
 }

@@ -84,8 +84,8 @@
     <plugin name="cordova-sqlite-storage" spec="~3.2.0" />
     <plugin name="cordova-plugin-firebase" spec="2.0.5" />
     <allow-navigation href="http://192.168.56.1:8100" />
-    <engine name="android" spec="7.1.4" />
     <plugin name="cordova.plugins.diagnostic" spec="4.0.12">
         <variable name="ANDROID_SUPPORT_VERSION" value="28.+" />
     </plugin>
+    <engine name="android" spec="7.1.4" />
 </widget>

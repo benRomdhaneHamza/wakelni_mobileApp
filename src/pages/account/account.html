@@ -26,7 +26,7 @@
 			<ion-label>Numero de telephone</ion-label>
 			<ion-input [(ngModel)]="userInfo.phone" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"></ion-input>
 		</ion-item>
-		<button ion-button class="login-button" [disabled]="!disableUpdateGeneralBtn()">Valider</button>
+		<button ion-button class="login-button" [disabled]="!disableUpdateGeneralBtn()" (click)="updateGeneralInfo()">Valider</button>
 	</ion-list>
 	<br>
 
@@ -34,17 +34,21 @@
 	<ion-list>
 		<ion-list-header style="font-size: 1.6em;">
 			<ion-icon name='ios-map-outline' item-start></ion-icon>
-			<span>Vos addresse</span>
+			<span style="float: left;">Vos addresses </span>
+			<span style="float: right; margin-right: 5%;">{{ userInfo.address.length }}</span>
 		</ion-list-header>
 
-		<ion-scroll scrollY="true" style="height: 200px">
+		<ion-scroll *ngIf="userInfo.address.length" scrollY="true" [ngStyle]="{ height: calculAddressesScrollHeight(userInfo.address)}">
 			<ion-list>
 				<ion-item *ngFor="let address of userInfo.address">
 					{{ address.description }}
-					<ion-icon name="ios-close-outline" item-end></ion-icon>
+					<ion-icon (tap)="deleteAddress($event, address._id)" name="ios-close-outline" style="color: red;" item-end></ion-icon>
 				</ion-item>
 			</ion-list>
 		</ion-scroll>
+		<ion-item *ngIf="userInfo.address.length == 0" style="text-align: center">
+			<h4>Vous n'avez aucune adresse, <br>passez des commandes pour ajouter vos adresses</h4>
+		</ion-item>
 
 	</ion-list>
 
@@ -96,7 +100,7 @@
       <ion-input id="email" type="text" [(ngModel)]="userInfo.email" [ngModelOptions]="{standalone: true}"></ion-input>
     </ion-item>
 
-		<p>{{ formatAddress(userInfo.address) }}</p>
+		<h6>{{ formatAddress(userInfo.address) }}</h6>
     <button ion-button block (click)="saveModiciation()">Enregistrer</button>
   </form>
   <button ion-button block (click)="logout()">Se déconnecter</button>
