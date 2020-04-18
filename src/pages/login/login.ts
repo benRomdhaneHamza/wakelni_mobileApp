@@ -31,11 +31,7 @@ export class LoginPage {
 	public login() {
 		this.showLoading();
 		this.auth.login(this.loginCredentials).then(_res => {
-			this.fcmProvider.getToken().then(() => {
-				this.nav.setRoot('TabsPage');
-			}).catch(_err => {
-				this.catchLoginError(_err);
-			});
+			this.nav.setRoot('TabsPage');
 		}).catch(_err => {
 			this.catchLoginError(_err);
 		});

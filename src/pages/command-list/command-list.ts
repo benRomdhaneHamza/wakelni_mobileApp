@@ -66,9 +66,9 @@ export class CommandListPage {
 		// LOAD HISTORY
 		this.commandProvider.getUserCommands().then(_commands => {
 			this.commandsHistory = _commands;
-			//this.groupedHistory = this.commandsHistory;
+			this.groupedHistory = this.commandsHistory;
+			console.log('this.commandsHistory', this.commandsHistory)
 
-			//console.log(result);
 			if (this.groupedHistory.length != 0) {
 				this.groupedHistory = this.groupByState(this.commandsHistory);
 

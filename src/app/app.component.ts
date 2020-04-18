@@ -27,31 +27,6 @@ export class MyApp {
 			// Here you can do any higher level native things you might need.
 			statusBar.styleDefault();
 			splashScreen.hide();
-
-			fcm.listenToNotifications().pipe(
-				tap(msg => {
-					// show an action sheet
-					const actionSheet = this.actionSheetCtrl.create({
-						title: msg.body,
-						buttons: [
-							{
-								text: 'Voir la commande',
-								handler: () => {
-									console.log('Voir la commande clicked', msg.commandId);
-								}
-							},
-							{
-								text: 'Fermer',
-								role: 'cancel',
-							}
-						]
-					});
-					actionSheet.present();
-					setTimeout(() => {
-						actionSheet.dismiss();
-					}, 5000);
-				})
-			).subscribe();
 		});
 	}
 }
